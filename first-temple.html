@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>First Temple Tour</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap">
+<style>
+/* Layout: a five-stop walk from the outer gates to the Holy of Holies. Picture left, explanation right, reading sections below. */
+:root{
+  --bg:#edf0f4; --surface:#fafbfc; --ink:#17203a; --muted:#4d5a75; --line:#cbd3df;
+  --accent:#274690; --on-accent:#ffffff; --plate:#d9e2ea; --chip:#ffffff; --mark:#fff3c9;
+  --display:"Frank Ruhl Libre",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",Verdana,"Segoe UI",sans-serif;
+  --edge:rgba(70,58,34,.38);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:clamp(16px,3vw,32px);padding-block:28px 72px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2rem)}
+h3{font-size:1.3rem}
+h4{font-family:var(--body);font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.lede{max-width:66ch;color:var(--muted);font-size:1.08rem}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* route: the six stops, shaded deeper as holiness increases */
+.route{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.route button{width:100%;height:100%;text-align:left;border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;
+  background:color-mix(in srgb,var(--accent) calc(var(--lvl)*6%),var(--surface))}
+.route .num{font-family:var(--display);font-size:1.35rem;line-height:1}
+.route .nm{font-weight:700;font-size:.95rem;line-height:1.25}
+.route .who{font-size:.82rem;color:var(--muted);line-height:1.3}
+.route button[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+@media (max-width:900px){.route{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.route{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.tour{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:920px){.tour{grid-template-columns:minmax(0,1fr)}}
+.left{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage{position:relative;aspect-ratio:3/2;max-width:100%;background:var(--plate);border-radius:6px;overflow:hidden;touch-action:manipulation;user-select:none}
+.art,.art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.art.swap{animation:arrive .35s ease-out}
+@keyframes arrive{from{opacity:.2;transform:scale(1.06)}to{opacity:1;transform:none}}
+.hint{font-size:.95rem;color:var(--muted)}
+.hint strong{color:var(--ink)}
+.navrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:9px 14px}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.btn[disabled]{opacity:.45;cursor:default}
+
+/* labels on the picture */
+.chip{position:absolute;display:flex;align-items:center;gap:6px;transform:translate(-13px,-50%);border:0;background:none;padding:0;font-size:13px;line-height:1.2;white-space:nowrap}
+.chip.l{flex-direction:row-reverse;transform:translate(calc(-100% + 13px),-50%)}
+.chip .n{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--chip)}
+.chip .t{background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:3px 7px}
+.chip.gate .n{background:var(--accent);color:var(--on-accent)}
+.chip.gate .t{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.chip[aria-pressed="true"] .n{outline:3px solid var(--accent);outline-offset:2px}
+.chip[aria-pressed="true"] .t{background:var(--mark)}
+.chip.gate[aria-pressed="true"] .t{background:var(--accent)}
+@media (max-width:760px){.chip .t{display:none}}
+
+.legend{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.legend button{width:100%;text-align:left;display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:6px 10px;font-size:.95rem;line-height:1.25}
+.legend .n{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:var(--ink);color:var(--bg)}
+.legend .gate .n{background:var(--accent);color:var(--on-accent)}
+.legend button[aria-pressed="true"]{background:var(--mark);border-color:var(--accent)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel .who{border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+.panel .who b{display:block;font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.panel .src{font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.panel .blk{display:flex;flex-direction:column;gap:3px}
+a{color:var(--accent)}
+.linkbtn{align-self:flex-start;border:0;background:none;padding:0;color:var(--accent);text-decoration:underline}
+
+/* reading sections */
+section.read{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--line);padding-top:28px}
+.prose{max-width:68ch;display:flex;flex-direction:column;gap:12px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px 32px}
+.cols>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tablebox{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.97rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400}
+td:first-child{font-weight:700}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;max-width:68ch}
+.timeline li{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:12px}
+.timeline b{font-variant-numeric:tabular-nums}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px;max-width:72ch;display:flex;flex-direction:column;gap:8px}
+ol.q{margin:0;padding-left:1.3em;max-width:68ch;display:flex;flex-direction:column;gap:6px}
+
+/* illustration materials: top / south (shade) / east (sunlit) faces */
+.art polygon,.art ellipse{stroke:var(--edge);stroke-width:.6;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.ft{fill:var(--t)}.fs{fill:var(--s)}.fe{fill:var(--e)}
+.m-plat{--t:#e2d7ba;--s:#b3a482;--e:#cdbf9c}
+.m-pave{--t:#eadfc4;--s:#bfb08d;--e:#d6c9a7}
+.m-stone{--t:#f0e6cd;--s:#c3b493;--e:#e1d4b4}
+.m-white{--t:#fcfaf1;--s:#d6cfbd;--e:#f6f1e2}
+.m-roof{--t:#c59d7f;--s:#bfb08f;--e:#dccfae}
+.m-gold{--t:#f3cf66;--s:#b88a20;--e:#e0b23c}
+.m-goldwall{--t:#e9c96f;--s:#d8b24c;--e:#e6c05a}
+.m-bronze{--t:#c98a4a;--s:#8b5522;--e:#b06f33}
+.m-wood{--t:#a67a4e;--s:#6f4d2c;--e:#8d6339}
+.m-altar{--t:#d9d0bd;--s:#a39a86;--e:#c2b9a3}
+.m-marble{--t:#ffffff;--s:#c9c9cf;--e:#e9e9ee}
+.m-fort{--t:#d9cdb0;--s:#a59673;--e:#c0b28f}
+.m-rock{--t:#b9b2a3;--s:#807a6c;--e:#9d9687}
+.m-floor{--t:#d8c59a;--s:#a48f62;--e:#bfab7c}
+.m-bread{--t:#e8c88c;--s:#b08e52;--e:#cfab69}
+.m-jar{--t:#c9744a;--s:#8d4a2a;--e:#b06038}
+.m-fire{--t:#f08a24;--s:#c0531a;--e:#de6d1c}
+.c-dark{fill:#2b2a3c}.c-bronze{fill:#b06f33}.c-gold{fill:#e9bd45}.c-soreg{fill:#8d7f60}
+.c-inset{fill:#b9aa88}.c-water{fill:#6d9fc4}.c-ramp-t{fill:#d9d0bd}.c-ramp-e{fill:#c2b9a3}
+.c-v1{fill:#2a52be}.c-v2{fill:#6a2c91}.c-v3{fill:#b3202c}.c-v4{fill:#efe9d8}
+.m-hill{--t:#cbbd92;--s:#998a61;--e:#b3a479}
+.m-palace{--t:#eadec3;--s:#b8a986;--e:#d5c7a5}
+.m-cedar{--t:#a5603c;--s:#6f3b22;--e:#8c4e30}
+.m-brass{--t:#e0a45a;--s:#a56a2a;--e:#c98a40}
+.m-water{--t:#6d9fc4;--s:#4d7fa4;--e:#5d8fb4}
+.m-floorgold{--t:#e3c676;--s:#b79a48;--e:#cdb05c}
+.c-wing{fill:#f2d06a}.c-carve{fill:#c9a23c}.c-golddoor{fill:#f3d57a}
+.c-flame{fill:#ffb52e;stroke:none}
+.ln-gold{fill:none;stroke:#d9a62c;stroke-linecap:round}
+.smoke{fill:none;stroke:#f4f1ea;stroke-opacity:.75;stroke-linecap:round}
+.gate{cursor:pointer;outline:none}
+.gate .ring{fill:none;stroke:#ffffff;stroke-width:6;vector-effect:non-scaling-stroke}
+.gate .ring2{fill:none;stroke:#2a52be;stroke-width:3;vector-effect:non-scaling-stroke;animation:pulse 1.8s ease-in-out infinite}
+.gate:focus-visible .ring2{stroke-width:5}
+@keyframes pulse{50%{stroke-opacity:.35}}
+@media (prefers-reduced-motion:reduce){.gate .ring2{animation:none}.art.swap{animation:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow"><a href="index.html">← Both temple tours</a></p>
+    <p class="eyebrow">Jerusalem · Solomon's Temple · about 960 to 587/586 BCE</p>
+    <h1>A walk through the First Temple</h1>
+    <p class="lede">Start on the royal hill and walk inwards, one doorway at a time, to the room that held the Ark of the Covenant. Select a numbered label to read about it. Double-click the blue doorway to go through.</p>
+  </header>
+
+  <ol class="route" id="route" aria-label="The five stops of the tour"></ol>
+
+  <div class="tour" id="tour">
+    <div class="left">
+      <div class="stage" id="stage">
+        <div class="art" id="art"></div>
+        <div id="chips"></div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <div class="navrow">
+        <button class="btn" id="back" type="button">← Back one stop</button>
+        <button class="btn primary" id="fwd" type="button"></button>
+      </div>
+      <ol class="legend" id="legend" aria-label="Labels in this picture"></ol>
+    </div>
+    <div class="panel" id="panel" aria-live="polite"></div>
+  </div>
+
+  <section class="read" id="function">
+    <h2>How the Temple functioned</h2>
+    <div class="prose">
+      <p>The first Temple stood for almost four hundred years. The Bible tells us less about its daily routine than about its building. Much of the detail below comes from the Law (Leviticus) and from Chronicles, which was written after the exile and may describe some later practice.</p>
+    </div>
+    <div class="cols">
+      <div><h3>Daily worship</h3>
+        <p>A burnt offering was made every morning and a grain offering every evening (2 Kings 16:15). Extra offerings were made on Sabbaths and new moons. Incense was burned and the lamps were kept alight.</p>
+        <p>Chronicles describes Levites singing with cymbals, harps and lyres, and priests blowing trumpets (2 Chronicles 5:12–13). Many of the Psalms were probably sung here.</p></div>
+      <div><h3>The king's Temple</h3>
+        <p>The king built the Temple, paid for it and was responsible for its repair. Solomon himself prays, blesses the people and offers sacrifice at the dedication (1 Kings 8). Kings were crowned in the Temple (2 Kings 11:12).</p>
+        <p>A king could reform the worship, as Hezekiah and Josiah did, or corrupt it, as Ahaz and Manasseh did (2 Kings 16; 21).</p></div>
+      <div><h3>Festivals</h3>
+        <p>Three times a year the people came up for the pilgrim festivals: Passover with Unleavened Bread, Weeks and Tabernacles (Deuteronomy 16:16; 1 Kings 9:25). The Temple was dedicated at the autumn festival (1 Kings 8:2). Josiah's Passover is singled out as the greatest (2 Kings 23:21–23).</p></div>
+      <div><h3>Treasury and upkeep</h3>
+        <p>The Temple held the nation's treasure (1 Kings 7:51). King Joash set a chest beside the altar to collect money for repairs (2 Kings 12:9–15). It was during repairs under Josiah that the book of the law was found (2 Kings 22:3–10).</p></div>
+    </div>
+
+    <h3>Who did what</h3>
+    <div class="tablebox"><table>
+      <thead><tr><th>Group</th><th>Role</th><th>Reference</th></tr></thead>
+      <tbody>
+        <tr><td>The king</td><td>Builder and patron. Led the nation in prayer at great moments.</td><td>1 Kings 8; 2 Kings 23:1–3</td></tr>
+        <tr><td>Chief priest</td><td>Head of the priesthood. Zadok held the office under Solomon, Hilkiah under Josiah.</td><td>1 Kings 2:35; 2 Kings 22:4</td></tr>
+        <tr><td>Priests</td><td>Offered the sacrifices, burned incense and tended the lamps. Some served as keepers of the threshold.</td><td>2 Kings 12:9; 23:4</td></tr>
+        <tr><td>Levites</td><td>In Chronicles: singers, musicians, gatekeepers and assistants to the priests.</td><td>1 Chronicles 23–26</td></tr>
+        <tr><td>Prophets</td><td>Not Temple staff, but often present. Isaiah has his vision here. Jeremiah preaches in the court.</td><td>Isaiah 6; Jeremiah 7; 26</td></tr>
+        <tr><td>The people</td><td>Brought offerings, kept the festivals and gathered in the court.</td><td>Deuteronomy 16:16</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section class="read" id="significance">
+    <h2>Religious and theological significance</h2>
+    <div class="cols">
+      <div><h3>God's dwelling: name and glory</h3>
+        <p>The cloud of glory fills the house, showing that God is present (1 Kings 8:10–11). Yet Solomon asks, will God really dwell on earth? Heaven cannot contain him. So the Temple is the place where God's name is, and towards which people pray (1 Kings 8:27–30). Presence and transcendence are held together.</p></div>
+      <div><h3>A throne room</h3>
+        <p>God is "enthroned on the cherubim" (Psalm 99:1) and the Ark is his footstool. There was no statue of God. The throne was empty to the eye. This set Israel's Temple apart from the temples of its neighbours, whose plan it otherwise shared.</p></div>
+      <div><h3>Zion and the house of David</h3>
+        <p>God promises David a lasting dynasty, and David's son builds God's house (2 Samuel 7:12–13). Temple and kingship support each other. The psalms of Zion celebrate Jerusalem as the city God has chosen and defends (Psalms 46; 48; 132).</p></div>
+      <div><h3>Covenant and law</h3>
+        <p>At the centre of the building lay the tablets of the commandments. Worship was tied to the covenant made at Sinai. Deuteronomy calls for one place of sacrifice (Deuteronomy 12:5–14), and Josiah's reform closed the other shrines (2 Kings 23).</p></div>
+      <div><h3>A house of prayer</h3>
+        <p>Solomon's prayer pictures people turning towards the Temple in drought, defeat, sickness and sin, and being forgiven. It includes the foreigner who comes from a distant land (1 Kings 8:41–43).</p></div>
+      <div><h3>The prophets' warning</h3>
+        <p>Jeremiah stood in the gate and told the people not to trust in the words "the temple of the Lord". Without justice the building would not save them. God would treat it as he had treated the old shrine at Shiloh (Jeremiah 7:1–15).</p></div>
+      <div><h3>Destruction and exile</h3>
+        <p>In 587/586 BCE the Babylonian army burned the Temple and carried its bronze and gold away (2 Kings 25:8–17). This was a crisis of faith: had God been defeated, or had God judged his own people? See Psalm 137 and Lamentations. Ezekiel answers that the glory left before the Temple fell, and promises its return (Ezekiel 10–11; 43:1–5).</p></div>
+    </div>
+  </section>
+
+  <section class="read" id="compare">
+    <h2>First Temple and Second Temple compared</h2>
+    <div class="tablebox"><table>
+      <thead><tr><th>Feature</th><th>First Temple (Solomon)</th><th>Second Temple (as rebuilt by Herod)</th></tr></thead>
+      <tbody>
+        <tr><td>Dates</td><td>About 960 BCE to 587/586 BCE</td><td>About 516 BCE to 70 CE. Herod's rebuilding began about 20/19 BCE.</td></tr>
+        <tr><td>Destroyed by</td><td>Babylon, under Nebuchadnezzar</td><td>Rome, under Titus</td></tr>
+        <tr><td>Setting</td><td>Part of the royal palace complex</td><td>A vast platform of its own, with a Roman fortress beside it</td></tr>
+        <tr><td>Courts</td><td>Two: the inner court and the great court</td><td>A graded series: Gentiles, Women, Israel, Priests</td></tr>
+        <tr><td>At the entrance</td><td>The pillars Jachin and Boaz</td><td>An open porch with a golden vine</td></tr>
+        <tr><td>Water for washing</td><td>The bronze Sea on twelve oxen, and ten wheeled stands</td><td>A single laver</td></tr>
+        <tr><td>Lampstands</td><td>Ten</td><td>One, with seven branches</td></tr>
+        <tr><td>Holy of Holies</td><td>The Ark beneath two great cherubim</td><td>Empty</td></tr>
+        <tr><td>Main sources</td><td>1 Kings 5–8; 2 Chronicles 2–7</td><td>Josephus; Mishnah Middot; the New Testament</td></tr>
+      </tbody></table></div>
+    <p class="hint">The companion page for Herod's Temple: <a href="second-temple.html">Second Temple Tour</a>.</p>
+  </section>
+
+  <section class="read" id="nt">
+    <h2>The First Temple in the New Testament</h2>
+    <div class="tablebox"><table>
+      <thead><tr><th>Passage</th><th>What it draws on</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>Matthew 12:6, 42</td><td>The Temple and Solomon</td><td>Jesus says that something greater than the Temple, and greater than Solomon, is here.</td></tr>
+        <tr><td>Mark 11:17</td><td>Jeremiah's Temple sermon (Jeremiah 7:11)</td><td>Jesus uses Jeremiah's words about the first Temple against the Temple of his own day.</td></tr>
+        <tr><td>John 1:14</td><td>The glory filling the house</td><td>The Word lived among us "and we have seen his glory".</td></tr>
+        <tr><td>John 12:41</td><td>Isaiah's vision in the Temple (Isaiah 6)</td><td>John says Isaiah saw Jesus' glory.</td></tr>
+        <tr><td>Acts 7:44–50</td><td>Solomon's building and his prayer</td><td>Stephen says that Solomon built a house, yet the Most High does not live in houses made by human hands.</td></tr>
+        <tr><td>Hebrews 9:1–5</td><td>The Ark, the cherubim, the mercy seat</td><td>The furnishings of the earthly sanctuary are listed as a pattern pointing to Christ.</td></tr>
+        <tr><td>Revelation 11:19; 21:16, 22</td><td>The Ark and the cube-shaped inner room</td><td>The Ark is seen in heaven. The new Jerusalem is a perfect cube and needs no temple.</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section class="read" id="timeline">
+    <h2>Key dates</h2>
+    <ul class="timeline">
+      <li><b>c. 960 BCE</b><span>Solomon builds the Temple in seven years (1 Kings 6:1, 37–38). The date is traditional and approximate.</span></li>
+      <li><b>c. 925 BCE</b><span>Shishak of Egypt carries off the Temple treasures (1 Kings 14:25–26).</span></li>
+      <li><b>c. 730 BCE</b><span>Ahaz installs a new altar copied from Damascus (2 Kings 16:10–16).</span></li>
+      <li><b>701 BCE</b><span>Hezekiah strips gold from the Temple doors to pay Assyria (2 Kings 18:15–16).</span></li>
+      <li><b>622 BCE</b><span>The book of the law is found during repairs. Josiah reforms the worship (2 Kings 22–23).</span></li>
+      <li><b>597 BCE</b><span>Babylon captures Jerusalem and takes Temple vessels (2 Kings 24:13).</span></li>
+      <li><b>587/586 BCE</b><span>The Temple is burned and the people exiled (2 Kings 25:8–17).</span></li>
+      <li><b>c. 516 BCE</b><span>The Second Temple is completed on the same site (Ezra 6:15).</span></li>
+    </ul>
+  </section>
+
+  <section class="read" id="questions">
+    <h2>Questions to think about</h2>
+    <ol class="q">
+      <li>Name the three parts of the Temple building, from the entrance inwards.</li>
+      <li>What stood in the Holy of Holies, and what did each object mean?</li>
+      <li>In 1 Kings 8:27–30, how does Solomon hold together the belief that God is present in the Temple and the belief that God cannot be contained?</li>
+      <li>What does the position of the Temple beside the palace suggest about the link between religion and kingship?</li>
+      <li>"The destruction of the first Temple strengthened Israel's faith more than it damaged it." How far do you agree? Use Jeremiah 7:1–15 and Ezekiel 10–11.</li>
+    </ol>
+  </section>
+
+  <section class="read" id="sources">
+    <h2>About the pictures and the sources</h2>
+    <div class="note">
+      <p><b>The pictures are simplified drawings.</b> Nothing of Solomon's Temple has been found, and the site cannot be excavated. Every reconstruction is built from the biblical text.</p>
+      <p><b>The main sources are 1 Kings 5–8 and 2 Chronicles 2–7.</b> Chronicles was written later and sometimes gives different figures. Examples are the height of the pillars (18 or 35 cubits) and the capacity of the Sea (2,000 or 3,000 baths). The labels say where they differ.</p>
+      <p><b>Some things are guesses.</b> The Bible does not give the layout of the palace buildings, the size of the courts, the shape of the altar or the position of the table. The labels flag each one. Ezekiel 40–48 describes a temple seen in a vision, so it is not used here as a description of Solomon's building.</p>
+      <p><b>Comparisons help.</b> Temples of the same period at Ain Dara and Tell Tayinat in Syria have a similar three-part plan.</p>
+      <p>Biblical wording follows the NRSV. A cubit was roughly half a metre.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const K=Math.cos(Math.PI/6);
+
+/* ---------- tiny isometric drawing kit: view from the south-east, east to the right ---------- */
+function Kit(){this.o=[];this.x0=1e9;this.y0=1e9;this.x1=-1e9;this.y1=-1e9;}
+Kit.prototype={
+  xy(e,s,z){const x=(e-s)*K,y=(e+s)*.5-z;
+    if(x<this.x0)this.x0=x;if(x>this.x1)this.x1=x;if(y<this.y0)this.y0=y;if(y>this.y1)this.y1=y;return [x,y];},
+  pts(a){return a.map(p=>{const q=this.xy(p[0],p[1],p[2]);return q[0].toFixed(2)+","+q[1].toFixed(2);}).join(" ");},
+  poly(a,c){this.o.push('<polygon points="'+this.pts(a)+'" class="'+c+'"/>');},
+  prism(fp,z,dz,m){
+    const n=fp.length;let ce=0,cs=0;fp.forEach(p=>{ce+=p[0]/n;cs+=p[1]/n;});
+    const f=[];
+    fp.forEach((p,i)=>{const q=fp[(i+1)%n],me=(p[0]+q[0])/2,ms=(p[1]+q[1])/2;
+      let ne=q[1]-p[1],ns=-(q[0]-p[0]);if(ne*(me-ce)+ns*(ms-cs)<0){ne=-ne;ns=-ns;}
+      if(ne+ns>1e-9)f.push({p,q,d:me+ms,c:ne>ns?"fe":"fs"});});
+    f.sort((a,b)=>a.d-b.d).forEach(g=>this.poly([[g.p[0],g.p[1],z],[g.q[0],g.q[1],z],[g.q[0],g.q[1],z+dz],[g.p[0],g.p[1],z+dz]],m+" "+g.c));
+    this.poly(fp.map(p=>[p[0],p[1],z+dz]),m+" ft");},
+  box(e,s,z,de,ds,dz,m){this.prism([[e,s],[e+de,s],[e+de,s+ds],[e,s+ds]],z,dz,m);},
+  cyl(e,s,z,r,dz,m,k){k=k||14;const fp=[];for(let i=0;i<k;i++){const t=i/k*2*Math.PI;fp.push([e+r*Math.cos(t),s+r*Math.sin(t)]);}this.prism(fp,z,dz,m);},
+  qS(s,e0,e1,z0,z1,c){this.poly([[e0,s,z0],[e1,s,z0],[e1,s,z1],[e0,s,z1]],c);},
+  qE(e,s0,s1,z0,z1,c){this.poly([[e,s0,z0],[e,s1,z0],[e,s1,z1],[e,s0,z1]],c);},
+  qT(e0,e1,s0,s1,z,c){this.poly([[e0,s0,z],[e1,s0,z],[e1,s1,z],[e0,s1,z]],c);},
+  line(a,c,w){this.o.push('<polyline points="'+this.pts(a)+'" class="'+c+'" stroke-width="'+w+'"/>');},
+  flame(e,s,z,r){const p=this.xy(e,s,z);this.o.push('<ellipse cx="'+p[0].toFixed(2)+'" cy="'+(p[1]-r).toFixed(2)+'" rx="'+(r*.6)+'" ry="'+r+'" class="c-flame"/>');},
+  smoke(e,s,z,h,w){const a=[];for(let i=0;i<=12;i++){const t=i/12;a.push([e+Math.sin(t*7)*w*t,s,z+h*t]);}this.line(a,"smoke",w*.9);},
+  gate(label,fn,rings){this.o.push('<g class="gate" tabindex="0" role="button" aria-label="'+label+'">');fn();
+    rings.forEach(r=>{const p=this.pts(r);this.o.push('<polygon points="'+p+'" class="ring"/><polygon points="'+p+'" class="ring2"/>');});
+    this.o.push("</g>");},
+  done(){let w=this.x1-this.x0,h=this.y1-this.y0;const pad=Math.max(w,h)*.05;
+    let x=this.x0-pad,y=this.y0-pad;w+=2*pad;h+=2*pad;
+    if(w/h<1.5){const nw=h*1.5;x-=(nw-w)/2;w=nw;}else{const nh=w/1.5;y-=(nh-h)/2;h=nh;}
+    this.vb={x,y,w,h};
+    return '<svg viewBox="'+[x,y,w,h].map(v=>v.toFixed(2)).join(" ")+'" preserveAspectRatio="xMidYMid meet" role="img">'+this.o.join("")+"</svg>";}
+};
+const rectE=(e,s0,s1,z0,z1)=>[[e,s0,z0],[e,s1,z0],[e,s1,z1],[e,s0,z1]];
+const rectS=(s,e0,e1,z0,z1)=>[[e0,s,z0],[e1,s,z0],[e1,s,z1],[e0,s,z1]];
+
+/* Solomon's Temple building: nave and porch with three storeys of side chambers, front to the east */
+function temple(S,e,s,z,detail,gate){
+  S.box(e,s,z,8,46,17,"m-stone");
+  S.box(e+8,s,z,80,8,17,"m-stone");
+  S.box(e+8,s+8,z,92,30,32,"m-white");
+  for(let k=0;k<7;k++)S.qS(s+38.05,e+14+k*10,e+17+k*10,z+21,z+26,"c-dark");
+  S.box(e+8,s+38,z,80,8,17,"m-stone");
+  if(detail)[2.5,8,13].forEach(r=>{for(let k=0;k<9;k++)S.qS(s+46.05,e+6+k*9,e+8+k*9,z+r,z+r+1.6,"c-dark");});
+  const door=()=>{S.qE(e+100.05,s+17,s+29,z,z+22,"c-dark");S.qE(e+100.07,s+19,s+22.9,z,z+16,"c-golddoor");S.qE(e+100.07,s+23.1,s+27,z,z+16,"c-golddoor");};
+  if(gate)S.gate(gate,door,[rectE(e+100.05,s+17,s+29,z,z+22)]);else door();
+  [s+12,s+34].forEach(p=>{S.cyl(e+104,p,z,2,18,"m-bronze",12);S.cyl(e+104,p,z+18,2.8,5,"m-brass",12);});
+}
+function stand(S,e,s){S.box(e,s,0,4,4,3,"m-bronze");S.cyl(e+2,s+2,3,2.2,1.4,"m-brass",10);}
+function lamp(S,e,s){S.box(e-.5,s-.5,0,1,1,.4,"m-gold");S.line([[e,s,.4],[e,s,5]],"ln-gold",.35);S.line([[e-.8,s,5],[e+.8,s,5]],"ln-gold",.35);S.flame(e,s,5.1,.5);}
+
+/* ---------- the five stops ---------- */
+const STOPS=[
+{ id:"stop-1", name:"The royal hill", who:"The people of Judah",
+  whoLong:"The people came into the great court to worship. The Bible does not give a full set of entry rules for this Temple.",
+  intro:["King Solomon built the first Temple in Jerusalem, traditionally dated to about 960 BCE. It stood on the hill above the old City of David. It was not a building on its own: the Temple and the royal palace formed one walled complex, with the Temple on the higher ground to the north.",
+         "You are looking from the south-east. The Temple is at the top right. The palace buildings are below it. Their exact positions are not known, so this layout is a reasoned guess."],
+  build(S){
+    S.box(0,-10,-22,270,440,22,"m-hill");
+    S.box(20,10,0,230,3,8,"m-stone");S.box(20,10,0,3,370,8,"m-stone");
+    S.box(55,35,0,3,113,7,"m-stone");S.box(58,35,0,157,3,7,"m-stone");
+    temple(S,65,67,0,false,null);
+    S.box(182,80,0,20,20,10,"m-bronze");
+    S.cyl(178,128,0,5,6,"m-bronze",14);
+    S.box(55,145,0,163,3,7,"m-stone");S.box(215,35,0,3,110,7,"m-stone");
+    S.box(213,82,0,7,16,13,"m-stone");
+    S.gate("East gate of the inner court. Press Enter to go through.",()=>S.qE(220.05,86,94,0,10,"c-dark"),[rectE(220.05,86,94,0,10)]);
+    S.box(60,190,0,50,50,18,"m-palace");S.box(130,190,0,50,40,16,"m-palace");
+    S.box(95,255,0,50,30,16,"m-palace");for(let k=0;k<6;k++)S.qS(285.05,99+k*8,102+k*8,0,12,"c-dark");
+    S.box(165,250,0,40,35,20,"m-palace");S.qS(285.05,180,190,0,13,"c-dark");
+    S.box(60,305,0,100,50,30,"m-palace");
+    for(let k=0;k<11;k++)S.qS(355.05,65+k*9,68+k*9,0,22,"c-dark");
+    for(let k=0;k<5;k++)S.qE(160.05,310+k*9,313+k*9,0,22,"c-dark");
+    S.box(20,380,0,233,3,8,"m-stone");S.box(250,10,0,3,373,8,"m-stone");
+    [[60,394],[82,400],[104,393],[128,401],[152,395],[176,400],[200,393],[92,414],[140,413],[188,415]].forEach(h=>S.box(h[0],h[1],0,13,9,6,"m-palace"));
+  },
+  labels:[
+   {n:"East gate",at:[220,90,18],side:"l",gate:true,
+    what:"A gate from the great court into the inner court of the Temple. The Bible names several Temple gates, including an east gate (Ezekiel 10:19) and an upper gate built later by King Jotham (2 Kings 15:35). It does not describe what they looked like.",
+    use:"Worshippers gathered in the courts. The prophets used the gates and courts as a place to speak to the crowds. Jeremiah is told to stand in the gate of the Lord's house and preach (Jeremiah 7:2).",
+    why:"The gate marked the step from the shared royal precinct into the holy court of sacrifice.",
+    src:"Ezekiel 10:19; 11:1; 2 Kings 15:35; Jeremiah 7:2; 26:10."},
+   {n:"The Temple",at:[120,90,32],side:"r",
+    what:"The \"house of the Lord\": a long stone building lined with cedar and gold, facing east. It was small by modern standards, about 30 metres long inside.",
+    use:"It was not a hall for a congregation. It was understood as God's house. Priests served inside and the people worshipped in the courts.",
+    why:"It gave Israel's God a fixed dwelling in the capital city, after centuries in which the Ark had been kept in a tent.",
+    src:"1 Kings 6:1–2, 37–38; 2 Samuel 7:1–13."},
+   {n:"The great court",at:[232,250,0],side:"r",
+    what:"The large outer court, enclosed by a wall of three courses of cut stone and a course of cedar beams.",
+    use:"The people of Judah gathered here at festivals and in times of crisis. King Jehoshaphat leads a national prayer here (2 Chronicles 20:5). Jeremiah preaches here (Jeremiah 26:2).",
+    why:"Unlike Herod's later Temple, there was no separate court for women or for Gentiles. The sources mention two courts.",
+    src:"1 Kings 7:12; 2 Kings 21:5; 2 Chronicles 4:9; Jeremiah 26:2."},
+   {n:"The royal houses",at:[85,215,18],side:"l",
+    what:"Solomon's own house, and a house for his wife, the daughter of Pharaoh. The palace took thirteen years to build. The Temple took seven.",
+    use:"The king lived a short walk below the Temple. Kings \"went up\" to the house of the Lord and came down again to the palace (2 Kings 11:19; Jeremiah 26:10).",
+    why:"Temple and palace side by side made a statement: the king ruled under the protection of God, and was responsible for God's house.",
+    src:"1 Kings 6:38–7:1; 7:8; 2 Kings 11:19."},
+   {n:"House of the Forest of Lebanon",at:[75,330,30],side:"r",
+    what:"The largest building on the hill: 100 cubits long, 50 wide and 30 high, with rows of cedar pillars like a forest.",
+    use:"A state hall and armoury. Solomon's gold shields were kept here.",
+    why:"It was bigger than the Temple. This reminds us that the complex was a royal project as well as a religious one.",
+    src:"1 Kings 7:2–5; 10:16–17."},
+   {n:"Hall of the Throne",at:[185,268,20],side:"r",
+    what:"The hall where the king sat to give judgement, panelled with cedar. Nearby was the Hall of Pillars.",
+    use:"People brought their cases to the king here.",
+    why:"Justice and worship were neighbours. The prophets insisted that the two belonged together.",
+    src:"1 Kings 7:6–7; 10:18–20."},
+   {n:"City of David",at:[130,410,6],side:"r",
+    what:"The older city, on the lower ridge to the south.",
+    use:"At the dedication the Ark was carried up in procession from the City of David to its new home (1 Kings 8:1–6).",
+    why:"The Temple hill came to be called Zion, the name that psalms and prophets use for the place God has chosen.",
+    src:"1 Kings 8:1–6; Psalm 132:13–14."},
+   {n:"Mount Moriah",at:[270,120,-10],side:"r",
+    what:"The hill itself. Chronicles calls it Mount Moriah and says it was the threshing floor that David bought from Araunah (Ornan) the Jebusite.",
+    use:"David built an altar there. Solomon built the Temple on the same spot.",
+    why:"The name Moriah links the site with the story of Abraham and Isaac (Genesis 22:2).",
+    src:"2 Samuel 24:18–25; 2 Chronicles 3:1."}
+  ]},
+
+{ id:"stop-2", name:"The inner court", who:"Priests, and the king",
+  whoLong:"Mainly the priests. Chronicles calls it \"the court of the priests\". In Kings the king also acts here: Solomon prays and offers sacrifice at the altar.",
+  intro:["This was the court of sacrifice, open to the sky. Everything in it was made of bronze by Hiram, a craftsman from Tyre (1 Kings 7:13–47).",
+         "The near walls are cut away so you can see in. The Temple building stands at the west end, facing the altar."],
+  build(S){
+    S.box(0,0,-2,200,150,2,"m-plat");
+    S.box(-3,-3,0,3,153,6,"m-stone");S.box(-3,-3,6,3,153,1.5,"m-cedar");
+    S.box(0,-3,0,200,3,6,"m-stone");S.box(0,-3,6,200,3,1.5,"m-cedar");
+    [70,85,100,115,130].forEach(e=>stand(S,e,36));
+    temple(S,10,52,0,false,"The porch of the Temple. Press Enter to go closer.");
+    S.box(150,65,0,20,20,10,"m-bronze");S.box(157,72,10,6,6,.6,"m-fire");S.flame(160,75,10.6,3);S.smoke(160,75,15,22,1.6);
+    [25,42,59,76,93].forEach(e=>stand(S,e,112));
+    const ox=[];[0,90,180,270].forEach(a=>[-24,0,24].forEach(d=>{const t=(a+d)*Math.PI/180;ox.push([125+3.9*Math.cos(t),126+3.9*Math.sin(t)]);}));
+    ox.sort((a,b)=>a[0]+a[1]-b[0]-b[1]).forEach(p=>S.box(p[0]-1,p[1]-1,0,2,2,2.6,"m-brass"));
+    S.cyl(125,126,2.6,5,5,"m-bronze",18);S.cyl(125,126,7.6,4.4,.05,"m-water",18);
+    S.box(-3,150,-2,206,3,4,"m-stone");S.box(200,-3,-2,3,153,4,"m-stone");
+  },
+  labels:[
+   {n:"The porch",at:[110,75,25],side:"r",gate:true,
+    what:"The entrance to the Temple building, with a great bronze pillar on each side.",
+    use:"Double-click to walk up to the building and look at it closely.",
+    why:"From the altar the priests looked straight at the doors of God's house.",
+    src:"1 Kings 6:3; 7:21."},
+   {n:"The bronze altar",at:[166,80,13],side:"r",
+    what:"The altar of burnt offering. Chronicles gives its size as 20 cubits square and 10 cubits high. The Bible does not describe its shape, so the drawing shows a plain block.",
+    use:"Animals were offered here every morning and evening, and in great numbers at festivals. At the dedication Solomon stood before this altar, spread out his hands and prayed. Later King Ahaz replaced it with a copy of an altar he had seen in Damascus (2 Kings 16:10–16).",
+    why:"The altar was where Israel met God through sacrifice: for thanksgiving, for fellowship and for forgiveness.",
+    src:"2 Chronicles 4:1; 1 Kings 8:22, 62–64; 2 Kings 16:10–16."},
+   {n:"The bronze Sea",at:[125,126,13],side:"r",
+    what:"A huge round basin, 10 cubits across and 5 high, resting on twelve bronze oxen. Three oxen faced each point of the compass. It stood to the south-east of the building. Kings says it held 2,000 baths of water and Chronicles says 3,000.",
+    use:"Chronicles says the priests washed in it.",
+    why:"It is called a \"sea\", not a basin. Many readers think it stood for the waters of creation, held in order by God. That is an interpretation: the text does not explain the name.",
+    src:"1 Kings 7:23–26, 39; 2 Chronicles 4:2–6; 2 Kings 16:17."},
+   {n:"The ten wheeled stands",at:[59,114,6],side:"l",
+    what:"Ten bronze trolleys on wheels, each carrying a basin. Their panels were decorated with lions, oxen and cherubim. Five stood on the south side of the building and five on the north. In this view most of the northern five are hidden behind the Temple.",
+    use:"Chronicles says they were used to rinse the parts of the burnt offering.",
+    why:"They show how much water and labour the daily sacrifices needed.",
+    src:"1 Kings 7:27–39; 2 Chronicles 4:6."},
+   {n:"Wall of stone and cedar",at:[190,0,8],side:"l",
+    what:"The wall of the inner court: three courses of cut stone and one course of cedar beams.",
+    use:"It separated the court of sacrifice from the great court outside.",
+    why:"The same costly materials were used for the court as for the house itself.",
+    src:"1 Kings 6:36; 7:12."},
+   {n:"The Temple",at:[60,75,33],side:"r",
+    what:"The house of the Lord, seen from the altar.",
+    use:"You will reach its doors at the next stop.",
+    why:"The building held three spaces in a line: porch, Holy Place and Holy of Holies. Each was holier than the one before.",
+    src:"1 Kings 6:2–3, 16–20."}
+  ]},
+
+{ id:"stop-3", name:"The Temple building", who:"Priests only",
+  whoLong:"Only priests went inside. King Uzziah is said to have been struck with a skin disease for entering to burn incense (2 Chronicles 26:16–21).",
+  intro:["You are standing in front of the house of the Lord. Inside it measured 60 cubits long, 20 wide and 30 high: roughly 30 metres by 10, and 15 metres tall. A porch stood at the front and three storeys of small rooms wrapped round the other three sides.",
+         "The same three-part plan has been found in temples of the same period in Syria, at Ain Dara and Tell Tayinat."],
+  build(S){
+    S.box(-12,-12,-2,135,72,2,"m-plat");
+    temple(S,0,0,0,true,"Doors of the Temple. Press Enter to go through.");
+  },
+  labels:[
+   {n:"The doors",at:[100,23,27],side:"l",gate:true,
+    what:"Folding doors of cypress wood on olivewood posts. They were carved with cherubim, palm trees and open flowers and covered with gold.",
+    use:"The priests went through these doors into the Holy Place.",
+    why:"The carvings on the doors are the same as those on the inner walls. They prepare the worshipper for what is inside.",
+    src:"1 Kings 6:33–35."},
+   {n:"Jachin and Boaz",at:[106,34,9],side:"r",
+    what:"Two free-standing bronze pillars, 18 cubits high, with capitals 5 cubits high shaped like lilies and hung with rows of pomegranates. The pillar on the south was called Jachin and the one on the north Boaz. Chronicles gives their height as 35 cubits.",
+    use:"They held nothing up. They seem to have marked the entrance. Kings stood \"by the pillar\" on great occasions: Joash at his crowning and Josiah when he renewed the covenant.",
+    why:"The names probably mean something like \"he establishes\" and \"in him is strength\". If so, they declared that God upholds the Temple and the royal house.",
+    src:"1 Kings 7:15–22; 2 Chronicles 3:15–17; 2 Kings 11:14; 23:3."},
+   {n:"The porch",at:[94,23,32],side:"r",
+    what:"The entrance hall, 20 cubits wide and 10 deep. Its Hebrew name is ulam.",
+    use:"A space to pass through between the court and the Holy Place.",
+    why:"It is the first of three steps inward. Chronicles gives its height as 120 cubits, a figure most readers think has been miscopied.",
+    src:"1 Kings 6:3; 2 Chronicles 3:4."},
+   {n:"The side chambers",at:[40,46,9],side:"l",
+    what:"Three storeys of small rooms built against the north, west and south walls. Each storey was a cubit wider than the one below. The door was on the south side, with stairs leading up.",
+    use:"The Bible does not say what they were for. They were probably store rooms for treasures, vessels and offerings.",
+    why:"The Temple treasuries mattered in the nation's history. They were emptied more than once to pay off foreign kings (1 Kings 14:25–26; 2 Kings 18:15–16).",
+    src:"1 Kings 6:5–10; 7:51."},
+   {n:"The windows",at:[30,38,24],side:"l",
+    what:"Windows set high in the walls, above the roof of the side chambers.",
+    use:"They let in a little light and let out the smoke of the lamps and incense. The Hebrew description is hard to translate.",
+    why:"The Holy Place was dim. The Holy of Holies beyond it had no window at all.",
+    src:"1 Kings 6:4."},
+   {n:"Stone, cedar and gold",at:[40,23,32],side:"r",
+    what:"Walls of stone, lined inside with cedar from Lebanon and covered with gold. The timber and many of the craftsmen came from King Hiram of Tyre. The work was done by forced labour.",
+    use:"The stones were cut to size at the quarry, so that no hammer or iron tool was heard on the site while the house was built.",
+    why:"The silence of the building work marked the place as holy from the start. The cost shows what Solomon could command, and Kings is frank about the burden it placed on the people.",
+    src:"1 Kings 5:1–18; 6:7, 14–22."}
+  ]},
+
+{ id:"stop-4", name:"The Holy Place", who:"Priests on duty",
+  whoLong:"Only priests on duty.",
+  intro:["Through the doors is the main hall, 40 cubits long and 20 wide. Its Hebrew name is hekhal. Walls and floor were covered with cedar and then with gold, so that no stone could be seen.",
+         "The walls were carved with cherubim, palm trees and open flowers. At the far end are the doors of the inner room."],
+  build(S){
+    S.box(0,0,-1,40,20,1,"m-floorgold");
+    S.box(-1,0,0,1,20,24,"m-goldwall");S.box(-1,-1,0,41,1,24,"m-goldwall");
+    for(let k=0;k<6;k++){S.qS(.03,3+k*6.2,6.6+k*6.2,3,15,"c-carve");}
+    for(let k=0;k<5;k++)S.qS(.03,4+k*7.5,6+k*7.5,19,22,"c-dark");
+    S.gate("Doors of the Holy of Holies. Press Enter to go through.",()=>{S.qE(.05,6.5,9.9,0,13,"c-golddoor");S.qE(.05,10.1,13.5,0,13,"c-golddoor");},[rectE(.05,6.5,13.5,0,13)]);
+    [8,14,20,26,32].forEach(e=>lamp(S,e,3.5));
+    S.box(4.2,9.2,0,1.6,1.6,3,"m-gold");S.smoke(5,10,3.1,7,.5);
+    S.box(18,9,0,4,2,2.6,"m-gold");[0,1].forEach(k=>{for(let j=0;j<3;j++)S.box(18.5+k*1.7,9.4,2.6+j*.4,1.3,1.2,.4,"m-bread");});
+    [8,14,20,26,32].forEach(e=>lamp(S,e,16.5));
+  },
+  labels:[
+   {n:"Inner doors",at:[0,10,14.5],side:"l",gate:true,
+    what:"Doors of olivewood, carved and covered with gold, with gold chains drawn across. Chronicles also mentions a curtain of blue, purple and crimson, worked with cherubim.",
+    use:"They closed off the Holy of Holies. Almost no one passed them.",
+    why:"Everything in the building points towards what lies behind these doors.",
+    src:"1 Kings 6:21, 31–32; 2 Chronicles 3:14."},
+   {n:"The ten lampstands",at:[32,16.5,5.7],side:"r",
+    what:"Ten lampstands of pure gold, five along the south side and five along the north, in front of the inner room. The tent in the wilderness had only one.",
+    use:"The priests kept the lamps burning.",
+    why:"Light in a windowless hall was a sign of God's presence. Ten lampstands in place of one show the scale and wealth of Solomon's building.",
+    src:"1 Kings 7:49; 2 Chronicles 4:7."},
+   {n:"Table of the bread",at:[22,10,2.9],side:"r",
+    what:"A golden table for the bread of the Presence. Kings mentions one table and Chronicles mentions ten. Its position in the hall is not given, so the drawing places it in the centre.",
+    use:"Twelve loaves were set out before God and replaced each Sabbath (Leviticus 24:5–9).",
+    why:"Twelve loaves for the twelve tribes: the whole people kept before God.",
+    src:"1 Kings 7:48; 2 Chronicles 4:8; Leviticus 24:5–9."},
+   {n:"The golden altar",at:[5,10,6.5],side:"r",
+    what:"A small altar of cedar covered with gold, standing in front of the inner room.",
+    use:"Incense was burned on it.",
+    why:"When Isaiah sees the Lord in the Temple, the house fills with smoke and a burning coal is taken from the altar to cleanse his lips (Isaiah 6:1–7).",
+    src:"1 Kings 6:20–22; 7:48; Isaiah 6:1–7."},
+   {n:"The carved walls",at:[31,0,15],side:"r",
+    what:"Cedar panels carved with cherubim, palm trees, open flowers and gourds, all covered with gold.",
+    use:"The floor was of cypress, also covered with gold.",
+    why:"Trees, flowers and cherubim recall the garden of Eden, which cherubim guard in Genesis 3:24. Many readers think the Temple was meant to look like a garden where God is present. The text does not say so directly.",
+    src:"1 Kings 6:15–18, 29–30; Genesis 3:24."}
+  ]},
+
+{ id:"stop-5", name:"The Holy of Holies", who:"The High Priest, once a year",
+  whoLong:"According to the Law, the High Priest alone, on the Day of Atonement (Leviticus 16). Priests carried the Ark in when the Temple was dedicated.",
+  intro:["The inner room, called the debir, was a perfect cube: 20 cubits long, wide and high, covered with gold. It had no window and no lamp.",
+         "In this Temple the room was not empty. It held the Ark of the Covenant beneath two great cherubim."],
+  build(S){
+    S.box(0,0,-1,20,20,1,"m-floorgold");
+    S.box(-1,0,0,1,20,20,"m-goldwall");S.box(-1,-1,0,21,1,20,"m-goldwall");
+    const cherub=c=>{S.poly([[8,c,7.5],[8,c-5,10],[8,c-5,6],[8,c,4]],"c-wing");S.poly([[8,c,7.5],[8,c+5,10],[8,c+5,6],[8,c,4]],"c-wing");
+      S.box(7,c-1,0,2,2,7.5,"m-gold");S.box(7.3,c-.7,7.5,1.4,1.4,1.6,"m-gold");};
+    cherub(5);
+    S.box(9.2,8.75,0,1.5,2.5,1.5,"m-gold");S.box(9.1,8.65,1.5,1.7,2.7,.2,"m-brass");
+    S.line([[6.5,9.1,1.2],[13.5,9.1,1.2]],"ln-gold",.22);S.line([[6.5,10.9,1.2],[13.5,10.9,1.2]],"ln-gold",.22);
+    cherub(15);
+  },
+  labels:[
+   {n:"The cherubim",at:[8,5,9.6],side:"r",
+    what:"Two figures of olivewood covered with gold, each 10 cubits high, about 5 metres. Each wing was 5 cubits long. The outer wings touched the side walls and the inner wings met in the middle of the room. They stood on their feet, facing the Holy Place.",
+    use:"They overshadowed the Ark. Cherubim in the Bible are not baby angels. They are winged guardians of a holy place, and were probably pictured with animal bodies, like guardian figures known from neighbouring cultures.",
+    why:"God is called the one \"enthroned on the cherubim\" (2 Kings 19:15; Psalm 99:1). The room was pictured as a throne room with an unseen king.",
+    src:"1 Kings 6:23–28; 2 Chronicles 3:10–13; Psalm 99:1."},
+   {n:"The Ark of the Covenant",at:[10.7,10,1.6],side:"r",
+    what:"A chest of acacia wood covered with gold, carried on two poles. Its gold cover is often called the mercy seat. It was quite small: two and a half cubits long.",
+    use:"It held the two stone tablets of the commandments, and nothing else. The poles were so long that their ends could be seen from the Holy Place.",
+    why:"The Ark tied the Temple to Moses and Sinai. It is called God's footstool (1 Chronicles 28:2). It disappears from the record when the Temple is destroyed. Jeremiah says it will not be missed or made again (Jeremiah 3:16).",
+    src:"Exodus 25:10–22; 1 Kings 8:6–9; 1 Chronicles 28:2; Jeremiah 3:16."},
+   {n:"The glory of the Lord",at:[8,10,10.4],side:"l",
+    what:"When the priests had set the Ark in place, a cloud filled the house, and they could not stand to serve because of it.",
+    use:"Solomon then prayed the great prayer of dedication (1 Kings 8:22–53).",
+    why:"The cloud is the sign that God has taken up residence. Yet the same prayer says that heaven itself cannot contain God. Ezekiel later sees the glory leave the Temple before its destruction (Ezekiel 10:18–19; 11:22–23).",
+    src:"1 Kings 8:10–13, 27–30; Ezekiel 10–11."},
+   {n:"The golden cube",at:[17,0,17],side:"r",
+    what:"A room of equal length, width and height, lined with gold.",
+    use:"It was kept in total darkness. Solomon says that the Lord has chosen to dwell in thick darkness (1 Kings 8:12).",
+    why:"The perfect shape and the darkness both express holiness: God is present, but hidden. In Revelation the new Jerusalem is also a perfect cube (Revelation 21:16).",
+    src:"1 Kings 6:19–20; 8:12; Revelation 21:16."}
+  ]}
+];
+
+/* ---------- page behaviour ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let cur=0,sel=-1,lastHit=null,lastT=0;
+
+function hit(key,single,dbl){const t=Date.now();if(lastHit===key&&t-lastT<450){lastHit=null;dbl();}else{lastHit=key;lastT=t;single();}}
+
+$("route").innerHTML=STOPS.map((s,i)=>'<li><button type="button" style="--lvl:'+i+'" data-i="'+i+'"><span class="num">'+(i+1)+'</span><span class="nm">'+esc(s.name)+'</span><span class="who">'+esc(s.who)+"</span></button></li>").join("");
+$("route").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i);});
+$("back").addEventListener("click",()=>go(cur-1));
+$("fwd").addEventListener("click",()=>go(cur===STOPS.length-1?0:cur+1));
+
+function go(i,quiet){
+  if(i<0||i>=STOPS.length)return;cur=i;sel=-1;
+  const st=STOPS[i],S=new Kit();st.build(S);
+  const art=$("art");art.innerHTML=S.done();
+  art.querySelector("svg").setAttribute("aria-label","Drawing of "+st.name);
+  art.classList.remove("swap");void art.offsetWidth;art.classList.add("swap");
+  const g=st.labels.findIndex(l=>l.gate);
+  const gateEl=art.querySelector(".gate");
+  if(gateEl){gateEl.addEventListener("click",()=>hit("gate",()=>pick(g),()=>go(cur+1)));
+    gateEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go(cur+1);}});}
+  $("chips").innerHTML=st.labels.map((l,k)=>{const p=S.xy(l.at[0],l.at[1],l.at[2]);
+    return '<button type="button" class="chip'+(l.side==="l"?" l":"")+(l.gate?" gate":"")+'" data-k="'+k+'" aria-pressed="false" style="left:'+((p[0]-S.vb.x)/S.vb.w*100).toFixed(2)+"%;top:"+((p[1]-S.vb.y)/S.vb.h*100).toFixed(2)+'%"><span class="n">'+(k+1)+'</span><span class="t">'+esc(l.n)+(l.gate?" · double-click":"")+"</span></button>";}).join("");
+  $("legend").innerHTML=st.labels.map((l,k)=>'<li><button type="button" data-k="'+k+'" aria-pressed="false"'+(l.gate?' class="gate"':"")+'><span class="n">'+(k+1)+"</span><span>"+esc(l.n)+(l.gate?" (way in)":"")+"</span></button></li>").join("");
+  document.querySelectorAll("#route button").forEach((b,k)=>b.setAttribute("aria-current",k===i?"true":"false"));
+  $("back").disabled=i===0;
+  $("fwd").textContent=i===STOPS.length-1?"Start again at stop 1":"Go on to stop "+(i+2)+": "+STOPS[i+1].name+" →";
+  $("hint").innerHTML=g>=0?"<strong>Double-click or double-tap the blue doorway</strong> ("+esc(st.labels[g].n)+") to walk through. Select any number to read about it.":"<strong>You have reached the centre of the Temple.</strong> Select a number to read about it, then read on below.";
+  overview();
+  try{history.replaceState(null,"","#"+st.id);}catch(e){}
+  if(!quiet){const r=$("tour").getBoundingClientRect();if(r.top<0||r.top>innerHeight*.6)$("tour").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"});}
+}
+function mark(){document.querySelectorAll("#chips .chip,#legend button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.k===sel?"true":"false"));}
+function overview(){sel=-1;mark();const st=STOPS[cur];
+  $("panel").innerHTML='<p class="eyebrow">Stop '+(cur+1)+" of "+STOPS.length+"</p><h2>"+esc(st.name)+'</h2><p class="who"><b>Who could enter</b>'+esc(st.whoLong)+"</p>"+st.intro.map(p=>"<p>"+esc(p)+"</p>").join("");}
+function pick(k){sel=k;mark();const st=STOPS[cur],l=st.labels[k];
+  $("panel").innerHTML='<p class="eyebrow">Label '+(k+1)+" · "+esc(st.name)+"</p><h2>"+esc(l.n)+"</h2>"
+   +'<div class="blk"><h4>What it was</h4><p>'+esc(l.what)+"</p></div>"
+   +'<div class="blk"><h4>How it was used</h4><p>'+esc(l.use)+"</p></div>"
+   +'<div class="blk"><h4>Why it matters</h4><p>'+esc(l.why)+"</p></div>"
+   +(l.gate?'<button type="button" class="btn primary" id="thru">Go through this gate →</button>':"")
+   +'<p class="src">Sources: '+esc(l.src)+"</p>"
+   +'<button type="button" class="linkbtn" id="ov">Back to the overview of this stop</button>';
+  $("ov").addEventListener("click",overview);
+  const t=$("thru");if(t)t.addEventListener("click",()=>go(cur+1));}
+function onLabel(e){const b=e.target.closest("button[data-k]");if(!b)return;const k=+b.dataset.k;
+  if(STOPS[cur].labels[k].gate)hit("gate",()=>pick(k),()=>go(cur+1));else{lastHit=null;pick(k);}}
+$("chips").addEventListener("click",onLabel);$("legend").addEventListener("click",onLabel);
+
+let start=0;try{const h=location.hash.slice(1);const k=STOPS.findIndex(s=>s.id===h);if(k>=0)start=k;}catch(e){}
+go(start,true);
+})();
+</script>
+
+</body>
+</html>

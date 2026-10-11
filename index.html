@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Temple Tours</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Frank+Ruhl+Libre:wght@500&display=swap">
+<style>
+:root{
+  --bg:#edf0f4; --surface:#fafbfc; --ink:#17203a; --muted:#4d5a75; --line:#cbd3df;
+  --accent:#274690; --on-accent:#ffffff; --plate:#d9e2ea; --chip:#ffffff; --mark:#fff3c9;
+  --display:"Frank Ruhl Libre",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",Verdana,"Segoe UI",sans-serif;
+  --edge:rgba(70,58,34,.38);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+main{max-width:860px;margin-inline:auto;padding-inline:clamp(16px,4vw,32px);padding-block:40px 72px;display:flex;flex-direction:column;gap:24px}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(2.1rem,6vw,3.3rem);line-height:1.15;margin:0}
+p{margin:0;max-width:60ch;color:var(--muted)}
+.tours{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.tours a{display:flex;flex-direction:column;gap:6px;padding:22px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);text-decoration:none}
+.tours a:hover,.tours a:focus-visible{border-color:var(--accent);outline:3px solid var(--accent);outline-offset:2px}
+.tours b{font-family:var(--display);font-weight:500;font-size:1.6rem;line-height:1.2}
+.tours span{color:var(--muted)}
+.tours em{font-style:normal;color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <h1>The Temple in Jerusalem</h1>
+  <p>Two guided walks, one for each Temple. Start outside and go inwards, one gate at a time.</p>
+  <div class="tours">
+    <a href="first-temple.html"><b>The First Temple</b><span>Solomon's Temple, about 960 to 587/586 BCE. Five stops, ending at the Ark of the Covenant.</span><em>Start the tour →</em></a>
+    <a href="second-temple.html"><b>The Second Temple</b><span>Herod's Temple, about 20 BCE to 70 CE. Six stops, ending at the empty Holy of Holies.</span><em>Start the tour →</em></a>
+  </div>
+</main>
+</body>
+</html>

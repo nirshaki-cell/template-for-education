@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Second Temple Tour</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap">
+<style>
+/* Layout: a six-stop walk from the outer gates to the Holy of Holies. Picture left, explanation right, reading sections below. */
+:root{
+  --bg:#edf0f4; --surface:#fafbfc; --ink:#17203a; --muted:#4d5a75; --line:#cbd3df;
+  --accent:#274690; --on-accent:#ffffff; --plate:#d9e2ea; --chip:#ffffff; --mark:#fff3c9;
+  --display:"Frank Ruhl Libre",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",Verdana,"Segoe UI",sans-serif;
+  --edge:rgba(70,58,34,.38);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f1524; --surface:#182036; --ink:#e9edf6; --muted:#a6b1c8; --line:#2f3b58;
+  --accent:#9db4f2; --on-accent:#0f1524; --plate:#1b2742; --chip:#182036; --mark:#3b3413;
+  --edge:rgba(40,32,16,.55); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:clamp(16px,3vw,32px);padding-block:28px 72px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,5vw,3.3rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2rem)}
+h3{font-size:1.3rem}
+h4{font-family:var(--body);font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.lede{max-width:66ch;color:var(--muted);font-size:1.08rem}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* route: the six stops, shaded deeper as holiness increases */
+.route{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.route button{width:100%;height:100%;text-align:left;border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;
+  background:color-mix(in srgb,var(--accent) calc(var(--lvl)*6%),var(--surface))}
+.route .num{font-family:var(--display);font-size:1.35rem;line-height:1}
+.route .nm{font-weight:700;font-size:.95rem;line-height:1.25}
+.route .who{font-size:.82rem;color:var(--muted);line-height:1.3}
+.route button[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+@media (max-width:900px){.route{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.route{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.tour{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:920px){.tour{grid-template-columns:minmax(0,1fr)}}
+.left{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage{position:relative;aspect-ratio:3/2;max-width:100%;background:var(--plate);border-radius:6px;overflow:hidden;touch-action:manipulation;user-select:none}
+.art,.art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.art.swap{animation:arrive .35s ease-out}
+@keyframes arrive{from{opacity:.2;transform:scale(1.06)}to{opacity:1;transform:none}}
+.hint{font-size:.95rem;color:var(--muted)}
+.hint strong{color:var(--ink)}
+.navrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:9px 14px}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.btn[disabled]{opacity:.45;cursor:default}
+
+/* labels on the picture */
+.chip{position:absolute;display:flex;align-items:center;gap:6px;transform:translate(-13px,-50%);border:0;background:none;padding:0;font-size:13px;line-height:1.2;white-space:nowrap}
+.chip.l{flex-direction:row-reverse;transform:translate(calc(-100% + 13px),-50%)}
+.chip .n{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--ink);color:var(--bg);box-shadow:0 0 0 2px var(--chip)}
+.chip .t{background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:3px 7px}
+.chip.gate .n{background:var(--accent);color:var(--on-accent)}
+.chip.gate .t{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.chip[aria-pressed="true"] .n{outline:3px solid var(--accent);outline-offset:2px}
+.chip[aria-pressed="true"] .t{background:var(--mark)}
+.chip.gate[aria-pressed="true"] .t{background:var(--accent)}
+@media (max-width:760px){.chip .t{display:none}}
+
+.legend{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.legend button{width:100%;text-align:left;display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:4px;padding:6px 10px;font-size:.95rem;line-height:1.25}
+.legend .n{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:var(--ink);color:var(--bg)}
+.legend .gate .n{background:var(--accent);color:var(--on-accent)}
+.legend button[aria-pressed="true"]{background:var(--mark);border-color:var(--accent)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel .who{border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+.panel .who b{display:block;font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.panel .src{font-size:.9rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.panel .blk{display:flex;flex-direction:column;gap:3px}
+.linkbtn{align-self:flex-start;border:0;background:none;padding:0;color:var(--accent);text-decoration:underline}
+
+/* reading sections */
+section.read{display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--line);padding-top:28px}
+.prose{max-width:68ch;display:flex;flex-direction:column;gap:12px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px 32px}
+.cols>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tablebox{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.97rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400}
+td:first-child{font-weight:700}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;max-width:68ch}
+.timeline li{display:grid;grid-template-columns:8.5em minmax(0,1fr);gap:12px}
+.timeline b{font-variant-numeric:tabular-nums}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px;max-width:72ch;display:flex;flex-direction:column;gap:8px}
+ol.q{margin:0;padding-left:1.3em;max-width:68ch;display:flex;flex-direction:column;gap:6px}
+
+/* illustration materials: top / south (shade) / east (sunlit) faces */
+.art polygon,.art ellipse{stroke:var(--edge);stroke-width:.6;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.ft{fill:var(--t)}.fs{fill:var(--s)}.fe{fill:var(--e)}
+.m-plat{--t:#e2d7ba;--s:#b3a482;--e:#cdbf9c}
+.m-pave{--t:#eadfc4;--s:#bfb08d;--e:#d6c9a7}
+.m-stone{--t:#f0e6cd;--s:#c3b493;--e:#e1d4b4}
+.m-white{--t:#fcfaf1;--s:#d6cfbd;--e:#f6f1e2}
+.m-roof{--t:#c59d7f;--s:#bfb08f;--e:#dccfae}
+.m-gold{--t:#f3cf66;--s:#b88a20;--e:#e0b23c}
+.m-goldwall{--t:#e9c96f;--s:#d8b24c;--e:#e6c05a}
+.m-bronze{--t:#c98a4a;--s:#8b5522;--e:#b06f33}
+.m-wood{--t:#a67a4e;--s:#6f4d2c;--e:#8d6339}
+.m-altar{--t:#d9d0bd;--s:#a39a86;--e:#c2b9a3}
+.m-marble{--t:#ffffff;--s:#c9c9cf;--e:#e9e9ee}
+.m-fort{--t:#d9cdb0;--s:#a59673;--e:#c0b28f}
+.m-rock{--t:#b9b2a3;--s:#807a6c;--e:#9d9687}
+.m-floor{--t:#d8c59a;--s:#a48f62;--e:#bfab7c}
+.m-bread{--t:#e8c88c;--s:#b08e52;--e:#cfab69}
+.m-jar{--t:#c9744a;--s:#8d4a2a;--e:#b06038}
+.m-fire{--t:#f08a24;--s:#c0531a;--e:#de6d1c}
+.c-dark{fill:#2b2a3c}.c-bronze{fill:#b06f33}.c-gold{fill:#e9bd45}.c-soreg{fill:#8d7f60}
+.c-inset{fill:#b9aa88}.c-water{fill:#6d9fc4}.c-ramp-t{fill:#d9d0bd}.c-ramp-e{fill:#c2b9a3}
+.c-v1{fill:#2a52be}.c-v2{fill:#6a2c91}.c-v3{fill:#b3202c}.c-v4{fill:#efe9d8}
+.c-flame{fill:#ffb52e;stroke:none}
+.ln-gold{fill:none;stroke:#d9a62c;stroke-linecap:round}
+.smoke{fill:none;stroke:#f4f1ea;stroke-opacity:.75;stroke-linecap:round}
+.gate{cursor:pointer;outline:none}
+.gate .ring{fill:none;stroke:#ffffff;stroke-width:6;vector-effect:non-scaling-stroke}
+.gate .ring2{fill:none;stroke:#2a52be;stroke-width:3;vector-effect:non-scaling-stroke;animation:pulse 1.8s ease-in-out infinite}
+.gate:focus-visible .ring2{stroke-width:5}
+@keyframes pulse{50%{stroke-opacity:.35}}
+@media (prefers-reduced-motion:reduce){.gate .ring2{animation:none}.art.swap{animation:none}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow"><a href="index.html">← Both temple tours</a></p>
+    <p class="eyebrow">Jerusalem · Herod's Temple · about 20 BCE to 70 CE</p>
+    <h1>A walk through the Second Temple</h1>
+    <p class="lede">Start outside the walls and walk inwards, one gate at a time. Each court was holier than the last, and fewer people were allowed in. Select a numbered label to read about it. Double-click the blue gate to go through.</p>
+  </header>
+
+  <ol class="route" id="route" aria-label="The six stops of the tour"></ol>
+
+  <div class="tour" id="tour">
+    <div class="left">
+      <div class="stage" id="stage">
+        <div class="art" id="art"></div>
+        <div id="chips"></div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <div class="navrow">
+        <button class="btn" id="back" type="button">← Back one stop</button>
+        <button class="btn primary" id="fwd" type="button"></button>
+      </div>
+      <ol class="legend" id="legend" aria-label="Labels in this picture"></ol>
+    </div>
+    <div class="panel" id="panel" aria-live="polite"></div>
+  </div>
+
+  <section class="read" id="function">
+    <h2>How the Temple functioned</h2>
+    <div class="prose">
+      <p>The Temple was the one place where Jews offered sacrifice. It worked every day of the year, to a fixed routine, with a large trained staff.</p>
+    </div>
+    <div class="cols">
+      <div><h3>A day in the Temple</h3>
+        <p>Before dawn the priests on duty cast lots to share out the tasks. They cleared the ashes from the altar, trimmed the lamps and offered the first lamb of the day with flour, oil and wine. A priest burned incense in the Holy Place, the priests blessed the people, and the Levites sang the psalm for that day.</p>
+        <p>Through the day individuals brought their own offerings. In the afternoon a second lamb was offered. These two daily lambs were called the <i>tamid</i>, the continual offering (Exodus 29:38–42; Numbers 28:1–8; Mishnah Tamid).</p></div>
+      <div><h3>Money</h3>
+        <p>Every adult Jewish man paid a half-shekel each year for the upkeep of the Temple and its public sacrifices (Exodus 30:11–16; Matthew 17:24–27). It had to be paid in approved silver coin, which is why money-changers set up tables (Mishnah Shekalim 1:3).</p>
+        <p>Gifts went into thirteen chests in the Court of the Women. The Temple also stored wealth, employed many workers and brought pilgrims' money into Jerusalem.</p></div>
+      <div><h3>Purity</h3>
+        <p>Worshippers washed by full immersion before going up. Many ritual baths have been excavated near the southern steps. The closer a person came to the centre, the stricter the rules became. The Mishnah lists ten rising degrees of holiness, ending in the Holy of Holies (Kelim 1:6–9).</p></div>
+    </div>
+
+    <h3>Who did what</h3>
+    <div class="tablebox"><table>
+      <thead><tr><th>Group</th><th>Role</th><th>Reference</th></tr></thead>
+      <tbody>
+        <tr><td>High Priest</td><td>Led the priesthood. Entered the Holy of Holies on the Day of Atonement.</td><td>Leviticus 16</td></tr>
+        <tr><td>Priests</td><td>Descendants of Aaron. Offered sacrifices, burned incense, blessed the people. Divided into 24 groups that served in turn, one week at a time.</td><td>1 Chronicles 24; Luke 1:5, 8–9</td></tr>
+        <tr><td>Levites</td><td>Singers, musicians and gatekeepers. Guarded and maintained the courts.</td><td>1 Chronicles 23–26</td></tr>
+        <tr><td>Lay people</td><td>Brought offerings, paid the half-shekel, prayed in the courts and came on pilgrimage.</td><td>Deuteronomy 16:16</td></tr>
+      </tbody></table></div>
+
+    <h3>The main kinds of offering</h3>
+    <div class="tablebox"><table>
+      <thead><tr><th>Offering</th><th>What happened</th><th>What it expressed</th></tr></thead>
+      <tbody>
+        <tr><td>Burnt offering</td><td>The whole animal was burned on the altar.</td><td>Complete devotion to God (Leviticus 1)</td></tr>
+        <tr><td>Grain offering</td><td>Flour, oil and frankincense. Part was burned and part eaten by priests.</td><td>Thanks for daily provision (Leviticus 2)</td></tr>
+        <tr><td>Peace offering</td><td>Part burned, part given to the priest, the rest eaten by the worshipper's family.</td><td>Fellowship and thanksgiving (Leviticus 3)</td></tr>
+        <tr><td>Sin offering</td><td>Blood applied to the altar. Offered after unintended sin or impurity.</td><td>Purification and forgiveness (Leviticus 4)</td></tr>
+        <tr><td>Guilt offering</td><td>A ram, with repayment made to the person wronged.</td><td>Putting right a wrong (Leviticus 5:14–6:7)</td></tr>
+      </tbody></table></div>
+
+    <h3>The festival year</h3>
+    <div class="tablebox"><table>
+      <thead><tr><th>Festival</th><th>What it remembered</th><th>At the Temple</th><th>New Testament link</th></tr></thead>
+      <tbody>
+        <tr><td>Passover</td><td>The exodus from Egypt</td><td>Families brought lambs to be slaughtered, then ate the meal in the city.</td><td>Mark 14:12–16</td></tr>
+        <tr><td>Weeks (Pentecost)</td><td>The wheat harvest</td><td>First fruits and two loaves were offered.</td><td>Acts 2:1</td></tr>
+        <tr><td>Tabernacles</td><td>The wilderness years</td><td>Water was poured at the altar and great lamps were lit in the Court of the Women.</td><td>John 7:2, 37; 8:12</td></tr>
+        <tr><td>Day of Atonement</td><td>Cleansing of sin</td><td>The High Priest entered the Holy of Holies.</td><td>Hebrews 9</td></tr>
+        <tr><td>Dedication (Hanukkah)</td><td>The rededication of the Temple in 164 BCE</td><td>Eight days of celebration.</td><td>John 10:22–23</td></tr>
+      </tbody></table></div>
+    <p class="hint">Passover, Weeks and Tabernacles were the three pilgrim festivals, when Jews were expected to travel to Jerusalem (Deuteronomy 16:16).</p>
+  </section>
+
+  <section class="read" id="significance">
+    <h2>Religious and theological significance</h2>
+    <div class="cols">
+      <div><h3>The place of God's presence</h3>
+        <p>The Temple was understood as the place where God chose to dwell among Israel. Solomon's prayer holds two ideas together: heaven itself cannot contain God, yet God's name is in this house and prayer is heard there (1 Kings 8:27–30). See also Psalm 132:13–14 and Ezekiel 43:1–7.</p></div>
+      <div><h3>Holiness built into space</h3>
+        <p>The plan of the building teaches a belief. God is holy, so approach is ordered and careful. Each step inwards meant a higher court, richer materials and fewer people. The Holy of Holies was empty: Israel's God was not shown by any image.</p></div>
+      <div><h3>Atonement and forgiveness</h3>
+        <p>Sacrifice was the God-given way to deal with sin and impurity and to restore the relationship with God (Leviticus 17:11). The Day of Atonement cleansed the sanctuary and the whole people once a year (Leviticus 16).</p></div>
+      <div><h3>Covenant and identity</h3>
+        <p>One God, one people, one Temple (Deuteronomy 12:5–14). Pilgrimage and the half-shekel tied Jews across the Roman world to Jerusalem. The Temple was also the national centre: court, treasury and symbol of the nation under Roman rule.</p></div>
+      <div><h3>Hope and criticism</h3>
+        <p>Prophets pictured all nations coming to the Temple (Isaiah 2:2–4; 56:7) and a renewed Temple in the age to come (Ezekiel 40–48). Prophets also warned that worship without justice would not protect the nation (Jeremiah 7:1–15; Amos 5:21–24).</p></div>
+      <div><h3>After 70 CE</h3>
+        <p>When Rome destroyed the Temple, sacrifice stopped. Rabbinic Judaism centred on prayer, the study of Torah and acts of loving kindness, which a rabbinic tradition says atone as the altar once did (Avot de-Rabbi Natan 4, citing Hosea 6:6). Christians came to speak of Jesus and the Church as the true temple.</p></div>
+    </div>
+  </section>
+
+  <section class="read" id="nt">
+    <h2>The Temple in the New Testament</h2>
+    <div class="tablebox"><table>
+      <thead><tr><th>Passage</th><th>Where in the Temple</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>Luke 1:5–23</td><td>Holy Place, altar of incense</td><td>Luke's Gospel opens with a priest at worship. The good news begins inside Israel's faith.</td></tr>
+        <tr><td>Luke 2:22–38</td><td>Probably the Court of the Women</td><td>Jesus' family keeps the Law. Simeon and Anna recognise him.</td></tr>
+        <tr><td>Luke 2:41–50</td><td>The outer courts</td><td>The boy Jesus among the teachers, in his Father's house.</td></tr>
+        <tr><td>Mark 11:15–18; John 2:13–22</td><td>The outer court</td><td>Jesus overturns the tables and quotes Isaiah 56:7 and Jeremiah 7:11. In Mark this leads the authorities to seek his death.</td></tr>
+        <tr><td>Mark 12:41–44</td><td>The treasury, Court of the Women</td><td>The widow's gift is set against the gifts of the rich.</td></tr>
+        <tr><td>Mark 13:1–2</td><td>Leaving the Temple</td><td>Jesus foretells that no stone will be left on another.</td></tr>
+        <tr><td>John 2:19–21</td><td>The outer court</td><td>John explains that Jesus spoke of the temple of his body.</td></tr>
+        <tr><td>Mark 15:38</td><td>The veil</td><td>The curtain is torn from top to bottom at Jesus' death.</td></tr>
+        <tr><td>Acts 2:46; 3:1–11; 5:12</td><td>The courts and Solomon's Portico</td><td>The first believers go on worshipping and teaching in the Temple.</td></tr>
+        <tr><td>Acts 21:27–36</td><td>The inner courts and the Antonia</td><td>Paul is accused of bringing a Gentile past the barrier and is arrested.</td></tr>
+        <tr><td>1 Corinthians 3:16–17; Ephesians 2:19–22; 1 Peter 2:4–5</td><td>None: the image is transferred</td><td>The Christian community is described as God's temple.</td></tr>
+        <tr><td>Hebrews 8–10</td><td>Holy of Holies</td><td>Christ is presented as the high priest who enters the heavenly sanctuary once for all.</td></tr>
+        <tr><td>Revelation 21:22</td><td>The new Jerusalem</td><td>The city has no temple, because God and the Lamb are its temple.</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section class="read" id="timeline">
+    <h2>Key dates</h2>
+    <ul class="timeline">
+      <li><b>c. 516 BCE</b><span>The Second Temple is completed after the return from exile in Babylon (Ezra 6:15).</span></li>
+      <li><b>167 BCE</b><span>Antiochus IV desecrates the Temple (1 Maccabees 1).</span></li>
+      <li><b>164 BCE</b><span>The Maccabees rededicate it. This is the origin of Hanukkah (1 Maccabees 4:36–59).</span></li>
+      <li><b>63 BCE</b><span>The Roman general Pompey captures Jerusalem and enters the sanctuary.</span></li>
+      <li><b>c. 20/19 BCE</b><span>Herod the Great begins rebuilding on a much larger scale (Josephus, <i>Antiquities</i> 15.380).</span></li>
+      <li><b>c. 62–64 CE</b><span>Work on the whole complex finally ends (<i>Antiquities</i> 20.219). Compare John 2:20.</span></li>
+      <li><b>70 CE</b><span>The Roman army under Titus destroys the Temple at the end of the Jewish revolt.</span></li>
+    </ul>
+  </section>
+
+  <section class="read" id="questions">
+    <h2>Questions to think about</h2>
+    <ol class="q">
+      <li>List the courts in order from the outside in. Who could enter each one?</li>
+      <li>What stood in the Holy Place, and what did each object stand for?</li>
+      <li>How does the layout of the Temple express beliefs about the holiness of God?</li>
+      <li>"Jesus' action in the Temple was an attack on the Temple itself, not only on the traders." How far do you agree? Use Mark 11:15–18 and Mark 13:1–2.</li>
+      <li>Why might the tearing of the veil (Mark 15:38) matter to the first readers of the Gospel?</li>
+    </ol>
+  </section>
+
+  <section class="read" id="sources">
+    <h2>About the pictures and the sources</h2>
+    <div class="note">
+      <p><b>The pictures are simplified drawings, not photographs.</b> No image of the Temple survives from the time. Shapes and positions follow the ancient descriptions, but sizes are approximate and some details are guesses shared by most reconstructions.</p>
+      <p><b>The two main sources sometimes disagree.</b> Josephus was a priest who saw the Temple before 70 CE (<i>Jewish War</i> 5.184–247; <i>Antiquities</i> 15.380–425). The Mishnah tractate <i>Middot</i> was written down around 200 CE from earlier memory. Where they differ, the labels say so.</p>
+      <p><b>Some locations are uncertain.</b> This applies to the Beautiful Gate, the traders' tables and the Chamber of Hewn Stone. The labels flag each one.</p>
+      <p>Biblical wording follows the NRSV. A cubit was roughly half a metre.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const K=Math.cos(Math.PI/6);
+
+/* ---------- tiny isometric drawing kit: view from the south-east, east to the right ---------- */
+function Kit(){this.o=[];this.x0=1e9;this.y0=1e9;this.x1=-1e9;this.y1=-1e9;}
+Kit.prototype={
+  xy(e,s,z){const x=(e-s)*K,y=(e+s)*.5-z;
+    if(x<this.x0)this.x0=x;if(x>this.x1)this.x1=x;if(y<this.y0)this.y0=y;if(y>this.y1)this.y1=y;return [x,y];},
+  pts(a){return a.map(p=>{const q=this.xy(p[0],p[1],p[2]);return q[0].toFixed(2)+","+q[1].toFixed(2);}).join(" ");},
+  poly(a,c){this.o.push('<polygon points="'+this.pts(a)+'" class="'+c+'"/>');},
+  prism(fp,z,dz,m){
+    const n=fp.length;let ce=0,cs=0;fp.forEach(p=>{ce+=p[0]/n;cs+=p[1]/n;});
+    const f=[];
+    fp.forEach((p,i)=>{const q=fp[(i+1)%n],me=(p[0]+q[0])/2,ms=(p[1]+q[1])/2;
+      let ne=q[1]-p[1],ns=-(q[0]-p[0]);if(ne*(me-ce)+ns*(ms-cs)<0){ne=-ne;ns=-ns;}
+      if(ne+ns>1e-9)f.push({p,q,d:me+ms,c:ne>ns?"fe":"fs"});});
+    f.sort((a,b)=>a.d-b.d).forEach(g=>this.poly([[g.p[0],g.p[1],z],[g.q[0],g.q[1],z],[g.q[0],g.q[1],z+dz],[g.p[0],g.p[1],z+dz]],m+" "+g.c));
+    this.poly(fp.map(p=>[p[0],p[1],z+dz]),m+" ft");},
+  box(e,s,z,de,ds,dz,m){this.prism([[e,s],[e+de,s],[e+de,s+ds],[e,s+ds]],z,dz,m);},
+  cyl(e,s,z,r,dz,m,k){k=k||14;const fp=[];for(let i=0;i<k;i++){const t=i/k*2*Math.PI;fp.push([e+r*Math.cos(t),s+r*Math.sin(t)]);}this.prism(fp,z,dz,m);},
+  qS(s,e0,e1,z0,z1,c){this.poly([[e0,s,z0],[e1,s,z0],[e1,s,z1],[e0,s,z1]],c);},
+  qE(e,s0,s1,z0,z1,c){this.poly([[e,s0,z0],[e,s1,z0],[e,s1,z1],[e,s0,z1]],c);},
+  qT(e0,e1,s0,s1,z,c){this.poly([[e0,s0,z],[e1,s0,z],[e1,s1,z],[e0,s1,z]],c);},
+  line(a,c,w){this.o.push('<polyline points="'+this.pts(a)+'" class="'+c+'" stroke-width="'+w+'"/>');},
+  flame(e,s,z,r){const p=this.xy(e,s,z);this.o.push('<ellipse cx="'+p[0].toFixed(2)+'" cy="'+(p[1]-r).toFixed(2)+'" rx="'+(r*.6)+'" ry="'+r+'" class="c-flame"/>');},
+  smoke(e,s,z,h,w){const a=[];for(let i=0;i<=12;i++){const t=i/12;a.push([e+Math.sin(t*7)*w*t,s,z+h*t]);}this.line(a,"smoke",w*.9);},
+  gate(label,fn,rings){this.o.push('<g class="gate" tabindex="0" role="button" aria-label="'+label+'">');fn();
+    rings.forEach(r=>{const p=this.pts(r);this.o.push('<polygon points="'+p+'" class="ring"/><polygon points="'+p+'" class="ring2"/>');});
+    this.o.push("</g>");},
+  done(){let w=this.x1-this.x0,h=this.y1-this.y0;const pad=Math.max(w,h)*.05;
+    let x=this.x0-pad,y=this.y0-pad;w+=2*pad;h+=2*pad;
+    if(w/h<1.5){const nw=h*1.5;x-=(nw-w)/2;w=nw;}else{const nh=w/1.5;y-=(nh-h)/2;h=nh;}
+    this.vb={x,y,w,h};
+    return '<svg viewBox="'+[x,y,w,h].map(v=>v.toFixed(2)).join(" ")+'" preserveAspectRatio="xMidYMid meet" role="img">'+this.o.join("")+"</svg>";}
+};
+const rectE=(e,s0,s1,z0,z1)=>[[e,s0,z0],[e,s1,z0],[e,s1,z1],[e,s0,z1]];
+const rectS=(s,e0,e1,z0,z1)=>[[e0,s,z0],[e1,s,z0],[e1,s,z1],[e0,s,z1]];
+
+/* the walled inner complex, shared by stops 1 and 2 */
+function complex(S,z,gate){
+  S.box(57,182,z,3,81,15,"m-stone");                 // west wall
+  S.box(60,182,z,170,3,15,"m-stone");                // north wall
+  S.box(60,185,z,100,75,3,"m-pave");                 // raised inner court
+  S.box(66,204,z+3,40,37,48,"m-white");              // sanctuary body
+  S.box(66,204,z+51,40,37,1.2,"m-gold");
+  S.box(106,196,z+3,12,53,52,"m-white");             // porch
+  S.box(106,196,z+55,12,53,1.2,"m-gold");
+  S.qE(118.05,216,229,z+5,z+34,"c-dark");            // great entrance
+  S.qE(118.05,214,231,z+34,z+38,"c-gold");           // golden vine
+  S.box(131,214,z+3,15,15,5,"m-altar");              // altar
+  S.box(160,185,z,3,75,19,"m-stone");                // wall between the courts
+  S.qE(163.05,217,228,z+3,z+15,"c-bronze");          // Nicanor Gate
+  S.box(60,260,z,170,3,14,"m-stone");                // south wall
+  S.box(230,182,z,3,81,14,"m-stone");                // east wall
+  const door=()=>S.qE(233.05,216,229,z,z+11,"c-bronze");
+  if(gate)S.gate("Gate into the Court of the Women. Press Enter to go through.",door,[rectE(233.05,216,229,z,z+11)]);else door();
+}
+
+/* ---------- the six stops ---------- */
+const STOPS=[
+{ id:"stop-1", name:"The Temple Mount", who:"Everyone",
+  whoLong:"Anyone could climb the steps and come this far, Jew or Gentile.",
+  intro:["Herod the Great began rebuilding the Second Temple in about 20/19 BCE. He enlarged the hilltop into a paved platform of roughly 14 hectares, held up by massive retaining walls. Colonnades ran round all four sides and the sanctuary stood near the middle.",
+         "This is the Temple that Jesus and the first Christians knew. You are looking from the south-east. Pilgrims arrived at the southern steps, at the bottom left."],
+  build(S){
+    S.box(0,-42,-30,90,42,55,"m-fort");
+    S.box(0,-42,25,12,12,12,"m-fort");S.box(78,-42,25,12,12,12,"m-fort");
+    S.box(0,-12,25,12,12,12,"m-fort");S.box(78,-12,25,12,12,20,"m-fort");
+    S.box(0,0,-30,300,480,30,"m-plat");
+    S.box(0,0,0,12,445,10,"m-roof");
+    for(let s=16;s<440;s+=9)S.qE(12.05,s,s+4,0,7,"c-dark");
+    S.box(12,0,0,288,12,10,"m-roof");
+    for(let e=16;e<284;e+=9)S.qS(12.05,e,e+4,0,7,"c-dark");
+    S.qT(45,246,168,169.6,.05,"c-soreg");S.qT(45,46.6,168,277,.05,"c-soreg");
+    S.qT(45,246,275.4,277,.05,"c-soreg");S.qT(244.4,246,168,277,.05,"c-soreg");
+    complex(S,0,false);
+    S.box(288,12,0,12,433,10,"m-roof");
+    S.box(0,445,0,300,35,13,"m-roof");
+    S.box(0,456,13,300,13,8,"m-roof");
+    S.qE(300.05,214,228,-30,-16,"c-dark");
+    const doors=()=>{[[96,102],[104,110],[194,200],[202,208],[210,216]].forEach(d=>S.qS(480.05,d[0],d[1],-20,-9,"c-dark"));};
+    S.gate("Huldah Gates. Press Enter to go through.",doors,[rectS(480.05,95,111,-20,-8),rectS(480.05,193,217,-20,-8)]);
+    S.box(82,480,-30,146,8,10,"m-stone");S.box(82,488,-30,146,7,6.5,"m-stone");S.box(82,495,-30,146,7,3,"m-stone");
+  },
+  labels:[
+   {n:"Huldah Gates",at:[222,480,-14],side:"r",gate:true,
+    what:"Two sets of gates in the southern wall (Mishnah Middot 1:3). The blocked Double Gate and Triple Gate still visible today are usually identified with them.",
+    use:"This was the main way in for ordinary pilgrims. A broad flight of steps led up from the city. Ritual baths found nearby show that people washed by immersion first. Inside each gate a sloping tunnel passed under the Royal Stoa and came out into the open court. The Mishnah says people went in on the right and came out on the left (Middot 2:2).",
+    why:"Worship began with a climb. People spoke of \"going up\" to Jerusalem, and Psalms 120–134 are called the Songs of Ascents.",
+    src:"Mishnah Middot 1:3; 2:2. Archaeology of the southern steps."},
+   {n:"Royal Stoa",at:[40,462,22],side:"r",
+    what:"A huge roofed hall along the whole southern side. Josephus counts 162 columns in four rows and says its height made people dizzy.",
+    use:"A public hall for meeting and business. The money-changers and animal sellers may have worked here, though this is not certain.",
+    why:"It shows that the Temple was also the civic and economic heart of the city. Its style was Greek and Roman, a sign of Herod's ambition.",
+    src:"Josephus, Antiquities 15.411–416."},
+   {n:"Solomon's Portico",at:[294,190,10],side:"r",
+    what:"The covered colonnade along the eastern side of the outer court.",
+    use:"A shaded place to walk, meet and teach. Jesus walks here at the festival of Dedication (John 10:22–23). The first believers in Jerusalem meet here (Acts 3:11; 5:12).",
+    why:"The earliest Christians did not leave the Temple. They went on meeting inside it.",
+    src:"John 10:23; Acts 3:11; 5:12."},
+   {n:"Court of the Gentiles",at:[150,360,0],side:"r",
+    what:"The great open pavement inside the colonnades. \"Court of the Gentiles\" is a modern name. Ancient writers call it the outer court or the Temple Mount.",
+    use:"Open to everyone. This is the next stop on the tour.",
+    why:"It was the only part of the Temple a non-Jew could enter.",
+    src:"Josephus, War 5.190–192."},
+   {n:"The soreg (barrier)",at:[110,276,0],side:"l",
+    what:"A low stone balustrade around the inner courts. Non-Jews could not pass it.",
+    use:"See the next stop for a closer look.",
+    why:"It marked the line between the outer court and holy ground.",
+    src:"Josephus, War 5.193–194; Mishnah Middot 2:3."},
+   {n:"The sanctuary",at:[112,222,58],side:"r",
+    what:"The Temple building itself, facing east. It held the Holy Place and the Holy of Holies.",
+    use:"Only priests went inside. Everyone else saw it from the courts.",
+    why:"Josephus says the front was covered with gold plates that blazed at sunrise, and that from far off the white stone looked like a mountain covered in snow.",
+    src:"Josephus, War 5.222–223."},
+   {n:"Antonia Fortress",at:[45,-27,25],side:"r",
+    what:"A fortress at the north-west corner, rebuilt by Herod and named after Mark Antony.",
+    use:"Roman soldiers were stationed here and watched the courts, above all at festivals when the crowds were largest. Soldiers run down from it to seize Paul (Acts 21:31–36).",
+    why:"Worship took place under the eye of the occupying power. Religion and politics could not be separated here.",
+    src:"Josephus, War 5.238–247; Acts 21:31–40."},
+   {n:"Retaining walls",at:[300,340,-15],side:"r",
+    what:"The walls that hold up the platform, built of enormous dressed stones.",
+    use:"The Western Wall, where Jews pray today, is part of the western retaining wall. It is not a wall of the Temple building itself.",
+    why:"The disciples marvel at the stones, and Jesus replies that not one will be left on another (Mark 13:1–2).",
+    src:"Mark 13:1–2; Josephus, Antiquities 15.396–400."}
+  ]},
+
+{ id:"stop-2", name:"Court of the Gentiles", who:"Everyone, including non-Jews",
+  whoLong:"Everyone, including Gentiles (non-Jews). No Gentile could go past the barrier.",
+  intro:["You have come up through the tunnel into the outer court. It was busy and noisy: pilgrims, teachers with their followers, people changing money and buying animals for sacrifice.",
+         "Ahead is the walled inner complex. A low barrier runs all the way round it."],
+  build(S){
+    S.box(20,140,-3,265,165,3,"m-plat");
+    S.box(45,168,0,202,1.2,2.6,"m-stone");S.box(45,168,0,1.2,109,2.6,"m-stone");
+    S.box(52,177,0,188,93,2,"m-pave");
+    complex(S,2,true);
+    S.box(45,276,0,202,1.2,2.6,"m-stone");
+    for(let e=60;e<240;e+=30)S.qS(277.25,e,e+4,.5,2.3,"c-gold");
+    S.box(246,168,0,1.2,109.2,2.6,"m-stone");
+    for(let s=180;s<270;s+=30)S.qE(247.25,s,s+4,.5,2.3,"c-gold");
+    for(let k=0;k<6;k++)S.box(256+(k%3)*8,238+Math.floor(k/3)*11,0,3.5,1.8,1.3,"m-wood");
+    S.box(259,262,0,2,2,1.6,"m-jar");S.box(268,262,0,2,2,1.6,"m-jar");
+  },
+  labels:[
+   {n:"The east gate",at:[233,222,14],side:"r",gate:true,
+    what:"The eastern gate of the inner complex, leading into the Court of the Women. Josephus describes one gate of Corinthian bronze that was worth more than the gates plated with silver and gold.",
+    use:"Jewish men and women entered here. In Acts a man who cannot walk is laid each day at \"the Beautiful Gate\" to ask for gifts (Acts 3:2, 10). Scholars are not agreed which gate that was. This gate and the Nicanor Gate are the usual suggestions.",
+    why:"From here on, only Jews could go further.",
+    src:"Josephus, War 5.201; Acts 3:2, 10."},
+   {n:"The soreg and its warning",at:[60,277,2.6],side:"r",
+    what:"A stone balustrade about chest high. The Mishnah gives ten handbreadths, Josephus three cubits, so the sources differ. Notices in Greek and Latin were fixed along it.",
+    use:"The notices warned that any foreigner who went past would be responsible for his own death. One complete Greek notice was found in 1871 and part of another in the 1930s.",
+    why:"Paul is nearly killed when he is accused of bringing a Gentile past this line (Acts 21:27–29). Ephesians 2:14 speaks of Christ breaking down a dividing wall between Jew and Gentile. Many readers connect that image with the soreg, though the letter does not name it.",
+    src:"Josephus, War 5.193–194; Antiquities 15.417; Mishnah Middot 2:3; Acts 21:27–29."},
+   {n:"The open court",at:[190,296,0],side:"l",
+    what:"The wide pavement between the colonnades and the barrier.",
+    use:"People prayed, met and listened to teachers here. The Gospels say Jesus taught in the Temple day after day (Mark 14:49; Luke 19:47).",
+    why:"Isaiah had pictured the Temple as a house of prayer for all peoples (Isaiah 56:7). This court was as close as the nations could come.",
+    src:"Mark 14:49; Luke 19:47; Isaiah 56:7."},
+   {n:"Money-changers and sellers",at:[280,262,1],side:"r",
+    what:"Tables for changing coins and stalls selling doves and animals fit for sacrifice. Their exact position is unknown. They may have stood in the outer court or in the Royal Stoa.",
+    use:"The half-shekel had to be paid in approved silver coin, so pilgrims changed their money. Buying an animal on site saved bringing one from home.",
+    why:"Jesus drove out the sellers and overturned the tables, quoting Isaiah 56:7 and Jeremiah 7:11 (Mark 11:15–17). Readers disagree about his meaning. Some see a protest against trade and corruption. Others see an acted sign that the Temple itself was under judgement.",
+    src:"Mishnah Shekalim 1:3; Mark 11:15–18; John 2:13–16."},
+   {n:"Terrace and inner walls",at:[215,270,2],side:"r",
+    what:"Inside the barrier, steps led up to a terrace called the hel. Behind it rose high walls with gates, like a fortress within the court.",
+    use:"The walls screened the sacrifices and the sanctuary from the outer court.",
+    why:"The Mishnah counts the hel as holier than the outer court: Gentiles and anyone made unclean by a dead body could not enter it (Kelim 1:8).",
+    src:"Mishnah Middot 2:3; Kelim 1:8; Josephus, War 5.195–198."},
+   {n:"The sanctuary",at:[112,222,60],side:"r",
+    what:"The Temple building, seen above the walls.",
+    use:"You will reach it at stop 5.",
+    why:"Its height meant it could be seen from every court, even by those who could never enter it.",
+    src:"Josephus, War 5.207–209."}
+  ]},
+
+{ id:"stop-3", name:"Court of the Women", who:"Jewish men and women",
+  whoLong:"All Jews who were ritually clean, men and women. Women went no further than this court.",
+  intro:["A large square court, open to the sky. The name does not mean it was only for women. It was the furthest point women could go, so this is where families worshipped together.",
+         "The near walls are cut away so you can see in. A room stood in each corner."],
+  build(S){
+    S.box(0,0,-1.5,70,70,1.5,"m-plat");
+    S.box(-3,-3,0,3,73,16,"m-stone");S.box(0,-3,0,70,3,14,"m-stone");
+    S.gate("Nicanor Gate. Press Enter to go through.",()=>S.qE(.05,30,40,3.6,13,"c-bronze"),[rectE(.05,30,40,3.6,13)]);
+    S.box(20,0,9,30,2.6,.8,"m-wood");
+    const room=(e,s)=>{S.box(e,s,0,20,20,6,"m-stone");S.qT(e+1.6,e+18.4,s+1.6,s+18.4,6.03,"c-inset");};
+    room(0,0);S.qT(5,15,5,15,6.05,"c-water");
+    for(let i=0;i<13;i++)S.box(22.2+i*2,.5,0,1.2,1.2,1.7,"m-gold");
+    room(50,0);for(let i=0;i<4;i++)S.box(54+i*3,6,6.05,2,8,1+.3*(i%2),"m-wood");
+    [11,8,5].forEach((r,i)=>{const fp=[];for(let k=0;k<=12;k++){const t=-Math.PI/2+k/12*Math.PI;fp.push([r*Math.cos(t),35+r*Math.sin(t)]);}S.prism(fp,i*1.2,1.2,"m-white");});
+    [[30,26],[44,26],[30,44],[44,44]].forEach(p=>{S.cyl(p[0],p[1],0,.6,13,"m-gold",8);S.cyl(p[0],p[1],13,1.5,.9,"m-gold",10);S.flame(p[0],p[1],13.9,1.5);});
+    room(0,50);[[6,57],[10,57],[14,57],[8,62],[12,62]].forEach(p=>S.cyl(p[0],p[1],6.05,1.3,2,"m-jar",8));
+    room(50,50);S.box(58,58,6.05,4,4,.8,"m-altar");S.flame(60,60,6.9,1.3);
+    S.box(-3,70,-1.5,76,2.5,3,"m-stone");S.box(70,-3,-1.5,2.5,73,3,"m-stone");
+  },
+  labels:[
+   {n:"Nicanor Gate",at:[0,35,14.5],side:"l",gate:true,
+    what:"The great gate at the top of the steps, leading west into the Court of Israel. The Mishnah says its doors were bronze and were kept when the other gates were covered with gold.",
+    use:"People who needed to complete a rite of purification stood at this gate, because they could not yet go further. The Mishnah mentions women after childbirth and people healed of skin disease. Mary's offering after the birth of Jesus (Luke 2:22–24) may have been made here.",
+    why:"It was the threshold between the place of the whole people and the place of sacrifice.",
+    src:"Mishnah Middot 1:4; 2:3; Sotah 1:5; Negaim 14:8; Luke 2:22–24."},
+   {n:"The fifteen steps",at:[8.5,40,2.6],side:"l",
+    what:"Fifteen curved steps rising to the Nicanor Gate.",
+    use:"The Levites stood on them with harps, lyres, cymbals and trumpets and sang.",
+    why:"The Mishnah links the fifteen steps with the fifteen Songs of Ascents, Psalms 120–134.",
+    src:"Mishnah Middot 2:5; Sukkah 5:4."},
+   {n:"The treasury chests",at:[35,1,3],side:"r",
+    what:"Thirteen chests with trumpet-shaped openings. Each was marked for a purpose, such as the half-shekel, wood, incense or free gifts.",
+    use:"Worshippers dropped their coins in as they passed.",
+    why:"Jesus sits opposite the treasury and watches a poor widow put in two small coins (Mark 12:41–44). John says Jesus taught \"in the treasury\" (John 8:20).",
+    src:"Mishnah Shekalim 6:5; Mark 12:41–44; John 8:20."},
+   {n:"Chamber of the Nazirites",at:[60,60,7],side:"r",
+    what:"The room in the south-east corner.",
+    use:"A Nazirite was a person under a special vow (Numbers 6). At the end of the vow he cooked his peace offering here, cut off his hair and burned it under the pot.",
+    why:"Paul pays the expenses of four men completing such a vow, to show his respect for the Law (Acts 21:23–26).",
+    src:"Mishnah Middot 2:5; Numbers 6:13–20; Acts 21:23–26."},
+   {n:"Chamber of the Wood",at:[60,10,7],side:"r",
+    what:"The room in the north-east corner.",
+    use:"Priests who had a physical blemish, and so could not serve at the altar, sorted the firewood here. Any wood with worms in it was rejected.",
+    why:"Everything that touched the altar had to be without defect, even the fuel.",
+    src:"Mishnah Middot 2:5."},
+   {n:"Chamber of the Lepers",at:[10,10,7],side:"r",
+    what:"The room in the north-west corner, with a bath for immersion.",
+    use:"A person healed of skin disease washed here before presenting themselves at the Nicanor Gate (Leviticus 14).",
+    why:"When Jesus heals a man with a skin disease he tells him to show himself to the priest and make the offering Moses commanded (Mark 1:44).",
+    src:"Mishnah Middot 2:5; Negaim 14:8; Leviticus 14; Mark 1:44."},
+   {n:"Chamber of the Oil",at:[10,66,6],side:"r",
+    what:"The room in the south-west corner.",
+    use:"Oil and wine for the offerings and the lamps were stored here.",
+    why:"A reminder of how much supply and organisation the daily worship needed.",
+    src:"Mishnah Middot 2:5."},
+   {n:"Festival lamps and gallery",at:[44,44,1],side:"r",
+    what:"Four great golden lampstands, and a raised gallery along the wall.",
+    use:"On the nights of Tabernacles the lamps were lit and men danced with torches while the Levites played. The Mishnah says a gallery was put up so that women could watch from above.",
+    why:"John sets Jesus' saying \"I am the light of the world\" (John 8:12) at Tabernacles, in the treasury. Many readers hear an echo of these lamps.",
+    src:"Mishnah Sukkah 5:2–4; Middot 2:5; John 7:2; 8:12, 20."}
+  ]},
+
+{ id:"stop-4", name:"Court of Israel and Court of the Priests", who:"Jewish men, then priests and Levites",
+  whoLong:"Court of Israel: Jewish men who were ritually clean. Court of the Priests: only priests and Levites on duty.",
+  intro:["Through the Nicanor Gate is the working centre of the Temple. Ordinary men stood in a narrow strip just inside the gate, the Court of Israel. Beyond a low platform lay the Court of the Priests, with the great altar.",
+         "Behind the altar rises the sanctuary. The near walls are cut away."],
+  build(S){
+    const P=1.3;
+    S.box(0,0,-1.5,100,75,1.5,"m-plat");
+    S.box(-3,-3,0,3,78,14,"m-stone");S.box(0,-3,0,100,3,14,"m-stone");
+    S.box(0,0,0,92.5,75,P,"m-pave");
+    S.box(61,0,P,13,5,7,"m-stone");S.qS(5.05,65,69,P,P+4.5,"c-dark");
+    S.box(7,19,P,41,37,48,"m-white");S.box(7,19,P+48,41,37,1,"m-gold");
+    S.box(48,11,P,12,52,52,"m-white");S.box(48,11,P+52,12,52,1,"m-gold");
+    S.gate("Entrance to the sanctuary. Press Enter to go through.",()=>{S.qE(60.05,31,43,P+3.6,P+26,"c-dark");S.qE(60.05,29.5,44.5,P+26,P+29.5,"c-gold");},[rectE(60.05,31,43,P+3.6,P+26)]);
+    S.box(60,24,P,5,26,1.2,"m-white");S.box(60,25,P+1.2,3.3,24,1.2,"m-white");S.box(60,26,P+2.4,1.6,22,1.2,"m-white");
+    for(let i=0;i<4;i++)for(let j=0;j<2;j++)S.box(74+i*4,11+j*6,P,2.2,1.3,1,"m-marble");
+    S.cyl(67.5,49.5,P,1.5,1.2,"m-bronze",10);S.cyl(67.5,49.5,P+1.2,2.3,1.5,"m-bronze",12);
+    S.box(71,29,P,17,17,1.2,"m-altar");S.box(72,30,P+1.2,15,15,4.2,"m-altar");
+    [[72,30],[86,30],[72,44],[86,44]].forEach(c=>S.box(c[0],c[1],P+5.4,1,1,1,"m-altar"));
+    S.box(77.5,35.5,P+5.4,4,4,.5,"m-fire");S.flame(79.5,37.5,P+5.9,2.4);S.smoke(79.5,37.5,P+9,14,1.2);
+    S.poly([[75,46,P+5.4],[84,46,P+5.4],[84,62,P],[75,62,P]],"c-ramp-t");
+    S.poly([[84,46,P],[84,46,P+5.4],[84,62,P]],"c-ramp-e");
+    S.box(92.5,0,0,1.5,75,.65,"m-white");
+    S.box(-3,75,-1.5,106,2.5,3,"m-stone");S.box(100,-3,-1.5,2.5,78,3,"m-stone");
+  },
+  labels:[
+   {n:"Sanctuary entrance",at:[60,37,20],side:"l",gate:true,
+    what:"Twelve steps led up to a towering open porch. Josephus says it had no doors. Over the opening hung a golden vine with clusters as tall as a man.",
+    use:"Only priests climbed these steps. People gave gold leaves and grapes to be hung on the vine.",
+    why:"The open porch let everyone in the court look towards the holy place they could not enter.",
+    src:"Josephus, War 5.207–210; Mishnah Middot 3:6–8."},
+   {n:"Altar of burnt offering",at:[79.5,40,8],side:"r",
+    what:"A massive square altar of uncut stones, with a horn at each corner. The Mishnah gives its base as 32 cubits square and Josephus gives 50 cubits, so the sources differ. It was reached by a ramp on the south side, since steps were forbidden (Exodus 20:25–26).",
+    use:"Every sacrifice was offered here. The blood was applied to the altar and the offering burned on it. The fire was never allowed to go out (Leviticus 6:12–13). A lamb was offered every morning and every afternoon.",
+    why:"This was the centre of the sacrificial system: the place of atonement, thanksgiving and shared meals before God.",
+    src:"Mishnah Middot 3:1–4; Josephus, War 5.225; Exodus 29:38–42; Leviticus 1–7."},
+   {n:"The laver",at:[67.5,49.5,4.5],side:"l",
+    what:"A bronze basin of water between the porch and the altar, a little to the south.",
+    use:"Priests washed their hands and feet here before serving at the altar or entering the sanctuary (Exodus 30:17–21).",
+    why:"Even those set apart to serve had to be cleansed each time they approached.",
+    src:"Mishnah Middot 3:6; Exodus 30:17–21."},
+   {n:"Place of slaughter",at:[84,8,3],side:"r",
+    what:"North of the altar stood rings, posts and marble tables.",
+    use:"Animals were killed, skinned and washed here before the parts were carried up the ramp (compare Leviticus 1:11).",
+    why:"Sacrifice was physical, costly work carried out in full view.",
+    src:"Mishnah Middot 3:5; Tamid 3–4."},
+   {n:"Court of Israel",at:[97,45,0],side:"r",
+    what:"A narrow strip just inside the Nicanor Gate, 135 cubits long and 11 wide according to the Mishnah.",
+    use:"Men stood here to pray and to bring their offerings. The person offering laid a hand on the animal's head (Leviticus 1:4).",
+    why:"The worshipper was close enough to see the sacrifice made on his behalf, but did not approach the altar himself. The priest acted between the people and God.",
+    src:"Mishnah Middot 2:6; Leviticus 1:3–5."},
+   {n:"The Levites' platform",at:[93,70,1.5],side:"l",
+    what:"A low stepped platform, the duchan, between the Court of Israel and the Court of the Priests.",
+    use:"The Levites stood here to sing the psalm of the day while the offering was made. The priests blessed the people with the words of Numbers 6:24–26.",
+    why:"Sacrifice was never silent. It was surrounded by psalms, music and blessing.",
+    src:"Mishnah Middot 2:6; Tamid 7:2–4."},
+   {n:"The sanctuary",at:[54,37,55],side:"r",
+    what:"The Temple building, about 100 cubits high and 100 cubits wide at the front, narrower behind.",
+    use:"It held two rooms: the Holy Place and, beyond the veil, the Holy of Holies.",
+    why:"White stone and gold marked it out as the house of God.",
+    src:"Mishnah Middot 4:6–7; Josephus, War 5.207–223."},
+   {n:"Chambers",at:[67,2.5,9],side:"r",
+    what:"Rooms were built against the walls of the court for stores, salt, vestments and washing.",
+    use:"One was the Chamber of Hewn Stone, where the Mishnah says the great Sanhedrin sat and judged whether priests were fit to serve. Its exact position is debated, and the drawing shows only a typical chamber.",
+    why:"The highest court of the nation met inside the Temple.",
+    src:"Mishnah Middot 5:3–4."}
+  ]},
+
+{ id:"stop-5", name:"The Holy Place", who:"Priests on duty",
+  whoLong:"Only priests on duty. The priest who burned the incense was chosen by lot.",
+  intro:["Inside the sanctuary. The first and larger room is the Holy Place, 40 cubits long and 20 wide. Its walls were covered with gold. No lay person ever saw this room.",
+         "Three objects stood here. At the far end hangs the veil."],
+  build(S){
+    S.box(0,0,-1,40,20,1,"m-floor");
+    S.box(0,-1,0,40,1,22,"m-goldwall");
+    S.gate("The veil. Press Enter to go through.",()=>{const c=["c-v1","c-v2","c-v3","c-v4","c-v2"];for(let i=0;i<10;i++)S.qE(.03,i*2,i*2+2,0,22,c[i%5]);},[rectE(.03,0,20,0,22)]);
+    S.box(20,3,0,5,2.6,2.6,"m-gold");
+    [0,1].forEach(k=>{for(let j=0;j<3;j++)S.box(20.7+k*2.2,3.6,2.6+j*.45,1.5,1.4,.45,"m-bread");});
+    S.box(5.2,9.2,0,1.6,1.6,3,"m-gold");S.smoke(6,10,3.1,7,.5);
+    S.box(21.2,15.3,0,1.6,1.4,.7,"m-gold");
+    S.line([[22,16,.7],[22,16,9]],"ln-gold",.45);
+    [1.5,3,4.5].forEach(r=>{const a=[];for(let i=0;i<=16;i++){const t=Math.PI+i/16*Math.PI;a.push([22+r*Math.cos(t),16,9+r*Math.sin(t)]);}S.line(a,"ln-gold",.4);});
+    [-4.5,-3,-1.5,0,1.5,3,4.5].forEach(d=>S.flame(22+d,16,9.1,.55));
+  },
+  labels:[
+   {n:"The veil",at:[0,10,15],side:"l",gate:true,
+    what:"The curtain that closed off the Holy of Holies. Exodus describes it as blue, purple and crimson with fine linen (Exodus 26:31–33). Josephus says the curtain at the sanctuary doors was a Babylonian tapestry in those colours, picturing the heavens. The Mishnah speaks of two curtains a cubit apart.",
+    use:"Only the High Priest passed it, on one day each year.",
+    why:"The Gospels say the Temple curtain was torn in two from top to bottom when Jesus died (Mark 15:38). They do not say which curtain. Hebrews takes the image further: believers now have a way into God's presence \"through the curtain\" (Hebrews 10:19–20).",
+    src:"Exodus 26:31–33; Josephus, War 5.212–214, 219; Mishnah Yoma 5:1; Mark 15:38; Hebrews 10:19–20."},
+   {n:"The menorah",at:[22,16,11.3],side:"l",
+    what:"A lampstand of pure gold with seven branches, standing on the south side.",
+    use:"Priests trimmed the lamps and refilled them with olive oil each day so that light burned continually (Exodus 27:20–21).",
+    why:"A sign of God's constant presence and of light. Josephus linked its seven lamps with the planets. The Romans carried it off in 70 CE, and it is carved on the Arch of Titus in Rome.",
+    src:"Exodus 25:31–40; 26:35; Josephus, War 5.216–217; 7.148–149."},
+   {n:"Table of the showbread",at:[27.5,4,1.2],side:"r",
+    what:"A gold-covered table on the north side, holding twelve loaves in two piles.",
+    use:"Fresh loaves were set out every Sabbath. The priests ate the old ones in a holy place (Leviticus 24:5–9).",
+    why:"Twelve loaves for the twelve tribes: all Israel was kept before God. Jesus refers to David eating this bread (Mark 2:25–26).",
+    src:"Exodus 25:23–30; Leviticus 24:5–9; Mark 2:25–26."},
+   {n:"Altar of incense",at:[6,10,6.5],side:"r",
+    what:"A small gold altar standing in front of the veil.",
+    use:"Incense was burned on it every morning and every afternoon. The priest was chosen by lot, and it was a rare honour.",
+    why:"Rising incense was a picture of prayer (Psalm 141:2; Revelation 8:3–4). Luke's Gospel begins here: Zechariah is offering the incense when the angel appears to him (Luke 1:8–11).",
+    src:"Exodus 30:1–10; Mishnah Tamid 5–6; Luke 1:8–11."}
+  ]},
+
+{ id:"stop-6", name:"The Holy of Holies", who:"The High Priest, once a year",
+  whoLong:"The High Priest alone, on one day each year: the Day of Atonement.",
+  intro:["Beyond the veil is a perfect square, 20 cubits by 20, with no window and no lamp. This was the holiest place in the Jewish world.",
+         "In the Second Temple it was empty."],
+  build(S){
+    S.box(0,0,-1,20,20,1,"m-floor");
+    S.box(-1,0,0,1,20,22,"m-goldwall");S.box(-1,-1,0,21,1,22,"m-goldwall");
+    S.prism([[8,9],[10,7.6],[12.6,8.2],[13.4,10.5],[12,12.6],[9.2,12.8]],0,.7,"m-rock");
+    S.cyl(10.6,10.3,.7,.5,.6,"m-gold",8);S.smoke(10.6,10.3,1.4,9,.5);
+  },
+  labels:[
+   {n:"The empty room",at:[10,0,13],side:"r",
+    what:"In Solomon's Temple this room held the Ark of the Covenant beneath two cherubim (1 Kings 8:6). The Ark was lost when the Babylonians destroyed the first Temple. Josephus says of this room that nothing at all stood in it.",
+    use:"No one entered except on the Day of Atonement.",
+    why:"Israel's God was present without any image or statue. Outsiders found this startling. The Roman historian Tacitus reports that when Pompey entered in 63 BCE he found the shrine empty.",
+    src:"1 Kings 8:6; Josephus, War 5.219; Tacitus, Histories 5.9."},
+   {n:"The foundation stone",at:[13,12.5,.7],side:"r",
+    what:"The Mishnah says that after the Ark was taken away a stone remained, called Shetiyah, standing three fingerbreadths above the floor.",
+    use:"On the Day of Atonement the High Priest set his pan of burning incense on it.",
+    why:"Later Jewish tradition called it the stone from which the world was founded: the meeting point of heaven and earth.",
+    src:"Mishnah Yoma 5:2."},
+   {n:"The Day of Atonement",at:[10.6,10.3,3],side:"l",
+    what:"The one day in the year when the room was entered (Leviticus 16).",
+    use:"The High Priest washed and put on plain white linen. He entered first with incense, so that the cloud covered the place. He entered again with the blood of a bull for his own sins and those of his household, and again with the blood of a goat for the sins of the people. A second goat, the scapegoat, was sent into the wilderness carrying the people's sins.",
+    why:"It was the yearly renewal of the relationship between God and Israel. Hebrews builds its account of Jesus' death on this day: Christ as high priest enters the true sanctuary once for all, with his own blood (Hebrews 9:7, 11–12, 24–26).",
+    src:"Leviticus 16; Mishnah Yoma; Hebrews 9."}
+  ]}
+];
+
+/* ---------- page behaviour ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let cur=0,sel=-1,lastHit=null,lastT=0;
+
+function hit(key,single,dbl){const t=Date.now();if(lastHit===key&&t-lastT<450){lastHit=null;dbl();}else{lastHit=key;lastT=t;single();}}
+
+$("route").innerHTML=STOPS.map((s,i)=>'<li><button type="button" style="--lvl:'+i+'" data-i="'+i+'"><span class="num">'+(i+1)+'</span><span class="nm">'+esc(s.name)+'</span><span class="who">'+esc(s.who)+"</span></button></li>").join("");
+$("route").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i);});
+$("back").addEventListener("click",()=>go(cur-1));
+$("fwd").addEventListener("click",()=>go(cur===STOPS.length-1?0:cur+1));
+
+function go(i,quiet){
+  if(i<0||i>=STOPS.length)return;cur=i;sel=-1;
+  const st=STOPS[i],S=new Kit();st.build(S);
+  const art=$("art");art.innerHTML=S.done();
+  art.querySelector("svg").setAttribute("aria-label","Drawing of "+st.name);
+  art.classList.remove("swap");void art.offsetWidth;art.classList.add("swap");
+  const g=st.labels.findIndex(l=>l.gate);
+  const gateEl=art.querySelector(".gate");
+  if(gateEl){gateEl.addEventListener("click",()=>hit("gate",()=>pick(g),()=>go(cur+1)));
+    gateEl.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go(cur+1);}});}
+  $("chips").innerHTML=st.labels.map((l,k)=>{const p=S.xy(l.at[0],l.at[1],l.at[2]);
+    return '<button type="button" class="chip'+(l.side==="l"?" l":"")+(l.gate?" gate":"")+'" data-k="'+k+'" aria-pressed="false" style="left:'+((p[0]-S.vb.x)/S.vb.w*100).toFixed(2)+"%;top:"+((p[1]-S.vb.y)/S.vb.h*100).toFixed(2)+'%"><span class="n">'+(k+1)+'</span><span class="t">'+esc(l.n)+(l.gate?" · double-click":"")+"</span></button>";}).join("");
+  $("legend").innerHTML=st.labels.map((l,k)=>'<li><button type="button" data-k="'+k+'" aria-pressed="false"'+(l.gate?' class="gate"':"")+'><span class="n">'+(k+1)+"</span><span>"+esc(l.n)+(l.gate?" (way in)":"")+"</span></button></li>").join("");
+  document.querySelectorAll("#route button").forEach((b,k)=>b.setAttribute("aria-current",k===i?"true":"false"));
+  $("back").disabled=i===0;
+  $("fwd").textContent=i===STOPS.length-1?"Start again at the Temple Mount":"Go on to stop "+(i+2)+": "+STOPS[i+1].name+" →";
+  $("hint").innerHTML=g>=0?"<strong>Double-click or double-tap the blue gate</strong> ("+esc(st.labels[g].n)+") to walk through. Select any number to read about it.":"<strong>You have reached the centre of the Temple.</strong> Select a number to read about it, then read on below.";
+  overview();
+  try{history.replaceState(null,"","#"+st.id);}catch(e){}
+  if(!quiet){const r=$("tour").getBoundingClientRect();if(r.top<0||r.top>innerHeight*.6)$("tour").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth",block:"start"});}
+}
+function mark(){document.querySelectorAll("#chips .chip,#legend button").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.k===sel?"true":"false"));}
+function overview(){sel=-1;mark();const st=STOPS[cur];
+  $("panel").innerHTML='<p class="eyebrow">Stop '+(cur+1)+" of "+STOPS.length+"</p><h2>"+esc(st.name)+'</h2><p class="who"><b>Who could enter</b>'+esc(st.whoLong)+"</p>"+st.intro.map(p=>"<p>"+esc(p)+"</p>").join("");}
+function pick(k){sel=k;mark();const st=STOPS[cur],l=st.labels[k];
+  $("panel").innerHTML='<p class="eyebrow">Label '+(k+1)+" · "+esc(st.name)+"</p><h2>"+esc(l.n)+"</h2>"
+   +'<div class="blk"><h4>What it was</h4><p>'+esc(l.what)+"</p></div>"
+   +'<div class="blk"><h4>How it was used</h4><p>'+esc(l.use)+"</p></div>"
+   +'<div class="blk"><h4>Why it matters</h4><p>'+esc(l.why)+"</p></div>"
+   +(l.gate?'<button type="button" class="btn primary" id="thru">Go through this gate →</button>':"")
+   +'<p class="src">Sources: '+esc(l.src)+"</p>"
+   +'<button type="button" class="linkbtn" id="ov">Back to the overview of this stop</button>';
+  $("ov").addEventListener("click",overview);
+  const t=$("thru");if(t)t.addEventListener("click",()=>go(cur+1));}
+function onLabel(e){const b=e.target.closest("button[data-k]");if(!b)return;const k=+b.dataset.k;
+  if(STOPS[cur].labels[k].gate)hit("gate",()=>pick(k),()=>go(cur+1));else{lastHit=null;pick(k);}}
+$("chips").addEventListener("click",onLabel);$("legend").addEventListener("click",onLabel);
+
+let start=0;try{const h=location.hash.slice(1);const k=STOPS.findIndex(s=>s.id===h);if(k>=0)start=k;}catch(e){}
+go(start,true);
+})();
+</script>
+
+</body>
+</html>
